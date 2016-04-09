@@ -19,20 +19,38 @@ div#solver-config {
     background: #e0ffe0;
 }
 
-table.playfield {
-    td.h-matchstick {
-        width: $matchstick-length;
-        height: $matchstick-width;
-        border: 1px solid red;
-    }
+div#square-list {
+    float: left;
+    padding-left: 1em;
 
-    td.v-matchstick {
-        width: $matchstick-width;        
-        height: $matchstick-length;
-        border: 1px solid red;
+    td, th {
+        width: 3em;
+        text-align: center;
     }
+    
+    th {
+        font-weight: bold;
+    }
+}
 
-    td.placed {
-        background: red;
+div#playfield {
+    float: left;
+
+    table.playfield {
+        td.h-matchstick {
+            width: $matchstick-length;
+            height: $matchstick-width;
+            border: 1px solid red;
+        }
+
+        td.v-matchstick {
+            width: $matchstick-width;        
+            height: $matchstick-length;
+            border: 1px solid red;
+        }
+
+        td.placed {
+            background: red;
+        }
     }
 }

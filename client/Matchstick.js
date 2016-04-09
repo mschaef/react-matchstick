@@ -11,6 +11,8 @@ import {
     getSquares
 } from './MatchstickBoard';
 
+import SquareList from './SquareList';
+
 function FAIL(error) {
     console.error(error);
 }
@@ -110,18 +112,18 @@ export default class Matchstick extends Component {
             </table>
         );
 
-        let squareList = <div>{this.state.squares.size}</div>;
-        
         return (
             <div>
               <h1>Matchstick</h1>
               <div id="solver-config">
                 Move <input/> matchsticks to make <input/> squares.
               </div>
-              <div id="square-list">
-                {squareList}
+              <div id="playfield">
+                {table}
               </div>
-              {table}
+              <div id="square-list">
+                <SquareList squares={this.state.squares}/>
+              </div>
             </div>
         );
     }
