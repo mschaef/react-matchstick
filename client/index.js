@@ -9,9 +9,9 @@ import Immutable from 'immutable';
 
 import 'whatwg-fetch';
 
-import GLCanvas from './GLCanvas';
+import Matchstick from './Matchstick';
 
 import 'font-awesome/css/font-awesome.css';
-import './dashboard.scss';
+import './matchstick.scss';
 
-ReactDOM.render(<GLCanvas/>, document.getElementById('root'));
+ReactDOM.render(<Matchstick/>, document.getElementById('root'));

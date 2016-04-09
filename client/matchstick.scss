@@ -1,0 +1,27 @@
+/* *** */
+
+$matchstick-length: 80px;
+$matchstick-width: 10px;
+                        
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+    margin: 0px;
+    font-family: "Helvetica";
+}
+
+table.playfield {
+    td.h-matchstick {
+        width: $matchstick-length;
+        height: $matchstick-width;
+        border: 1px solid red;
+    }
+
+    td.v-matchstick {
+        width: $matchstick-width;        
+        height: $matchstick-length;
+        border: 1px solid red;
+    }
+}
