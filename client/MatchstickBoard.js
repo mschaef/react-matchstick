@@ -79,3 +79,31 @@ export function getSquares(board) {
 
     return squares;
 }
+
+function queryStickLocations(board, queryValue) {
+    let { sx, sy } = board.toJS();
+
+    let sticks = Immutable.List();
+
+    for(let cx = 0; cx <= sx; cx++) {
+        for(let cy = 0; cy <= sy; cy++) {
+            
+            if ((cx < sx) && (getMatchStick(board, { x : cx, y : cy }, 'top') == queryValue))
+                sticks = sticks.push(Immutable.fromJS({ x : cx, y : cy , side: 'top'}));
+
+            if ((cy < sy) && (getMatchStick(board, { x : cx, y : cy }, 'left') == queryValue))
+                sticks = sticks.push(Immutable.fromJS({ x : cx, y : cy , side: 'left'}));
+        }
+    }
+
+    return sticks;
+}
+
+export function getAllSticks(board) {
+    return queryStickLocations(board, true);
+}
+
+export function getAllEmptySticks(board) {
+    return queryStickLocations(board, false);
+}
+

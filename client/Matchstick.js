@@ -8,7 +8,9 @@ import {
     createBoard,
     setMatchStick,
     getMatchStick,
-    getSquares
+    getSquares,
+    getAllSticks,
+    getAllEmptySticks
 } from './MatchstickBoard';
 
 import SquareList from './SquareList';
@@ -24,7 +26,12 @@ export default class Matchstick extends Component {
 
         let board = createBoard(4, 4);
 
-        this.state = { board, squares: Immutable.List() };
+        this.state = {
+            board,
+            squares: Immutable.List(),
+            sticks: Immutable.List(),
+            emptySticks: getAllEmptySticks(board)
+        };
     }
 
     getStickClickHandler(spos, side) {
@@ -37,7 +44,9 @@ export default class Matchstick extends Component {
 
             this.setState({
                 board: newBoard,
-                squares: getSquares(newBoard)
+                squares: getSquares(newBoard),
+                sticks: getAllSticks(newBoard),
+                emptySticks: getAllEmptySticks(newBoard)
             });
         };
     }
@@ -122,6 +131,8 @@ export default class Matchstick extends Component {
                 {table}
               </div>
               <div id="square-list">
+                {this.state.sticks.size} - 
+                {this.state.emptySticks.size}
                 <SquareList squares={this.state.squares}/>
               </div>
             </div>
