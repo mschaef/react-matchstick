@@ -32,3 +32,30 @@ export function getMatchStick(board, spos, side) {
 
     return board.getIn(['board', y, x]);
 }
+
+export function isSquareAt(board, spos, size) {
+    let { x, y } = spos;
+
+    let { sx, sy } = board.toJS();
+
+    if ((x < 0) || (y < 0) || (x + size >= sx) || (y + size >= sy))
+        return false;
+
+    for(let cx = x; cx < x + size; cx++) {
+        if (!getMatchStick(board, { x: cx, y }, 'top'))
+            return false;
+
+        if (!getMatchStick(board, { x: cx, y: y + size - 1}, 'bottom'))
+            return false;
+    }
+
+    for(let cy = y; cy < y + size; cy++) {
+        if (!getMatchStick(board, { x , y: cy }, 'left'))
+            return false;
+
+        if (!getMatchStick(board, { x: x + size - 1, y: cy }, 'right'))
+            return false;
+    }
+
+    return true;
+}

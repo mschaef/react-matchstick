@@ -7,7 +7,8 @@ import classNames from 'classnames';
 import {
     createBoard,
     setMatchStick,
-    getMatchStick
+    getMatchStick,
+    isSquareAt
 } from './MatchstickBoard';
 
 function FAIL(error) {
@@ -21,7 +22,7 @@ export default class Matchstick extends Component {
 
         let board = createBoard(4, 4);
 
-        this.state = { board };
+        this.state = { board, hasSquare: false };
     }
 
     getStickClickHandler(spos, side) {
@@ -30,7 +31,10 @@ export default class Matchstick extends Component {
 
             let oldStick = getMatchStick(board, spos, side);
 
-            this.setState({ board: setMatchStick(board, spos, side, !oldStick)});
+            let newBoard = setMatchStick(board, spos, side, !oldStick);
+            let hasSquare = isSquareAt(newBoard, { x: 0, y: 0 }, 1);
+            
+            this.setState({ board: newBoard, hasSquare });
         };
     }
     
@@ -82,8 +86,6 @@ export default class Matchstick extends Component {
         return <tr key={y + "-v"} className="vrow">{row}</tr>;
     }
     
-
-
     render() {
         const board = this.state.board;
         
@@ -112,6 +114,7 @@ export default class Matchstick extends Component {
               <div id="solver-config">
                 Move <input/> matchsticks to make <input/> squares.
               </div>
+              {this.state.hasSquare ? "square" : "nope"}
               {table}
             </div>
         );
