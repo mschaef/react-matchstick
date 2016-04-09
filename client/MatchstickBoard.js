@@ -38,7 +38,7 @@ export function isSquareAt(board, spos, size) {
 
     let { sx, sy } = board.toJS();
 
-    if ((x < 0) || (y < 0) || (x + size >= sx) || (y + size >= sy))
+    if ((x < 0) || (y < 0) || (x + size > sx) || (y + size > sy))
         return false;
 
     for(let cx = x; cx < x + size; cx++) {
@@ -58,4 +58,24 @@ export function isSquareAt(board, spos, size) {
     }
 
     return true;
+}
+
+export function getSquares(board) {
+    let { sx, sy } = board.toJS();
+
+    let squares = Immutable.List();
+    
+    for(let cx = 0; cx < sx; cx++) {
+        for(let cy = 0; cy < sy; cy++) {
+            let maxSize = Math.min(sx - cx, sy - cy);
+
+            for(let size = 1; size <= maxSize; size++) {
+                if(isSquareAt(board, { x: cx, y: cy }, size)) {
+                    squares = squares.push(Immutable.fromJS({ x: cx, y: cy, size }));
+                }
+            }
+        }
+    }
+
+    return squares;
 }
