@@ -4,41 +4,14 @@ import React, { Component } from 'react';
 
 import classNames from 'classnames';
 
+import {
+    createBoard,
+    setMatchStick,
+    getMatchStick
+} from './MatchstickBoard';
+
 function FAIL(error) {
     console.error(error);
-}
-
-function squareToBoard(pos, side) {
-    let { x, y } = pos;
-    
-    switch(side) {
-    case 'top':    return { x: 2 * x + 1, y : y     };
-    case 'bottom': return { x: 2 * x + 1, y : y + 1 };
-    case 'left':   return { x: 2 * x    , y : y     };
-    case 'right':  return { x: 2 * x + 2, y : y     };
-    default: return FAIL("bad side: " + side);
-    }
-}
-
-function createBoard(sx, sy) {
-    let row = Immutable.List(Immutable.Repeat(false, sy * 3));
-
-    return Immutable.Map()
-        .set('sx', sx)
-        .set('sy', sy)
-        .set('board', Immutable.List(Immutable.Repeat(row, sx + 1)));
-}
-
-function setMatchStick(board, spos, side, present) {
-    let { x, y } = squareToBoard(spos, side);
-
-    return board.setIn(['board', y, x], present);
-}
-
-function getMatchStick(board, spos, side) {
-    let { x, y } = squareToBoard(spos, side);
-
-    return board.getIn(['board', y, x]);
 }
 
 export default class Matchstick extends Component {
@@ -53,8 +26,6 @@ export default class Matchstick extends Component {
 
     getStickClickHandler(spos, side) {
         return () => {
-            console.error("click", spos, side);
-            
             let board = this.state.board;
 
             let oldStick = getMatchStick(board, spos, side);
@@ -138,6 +109,9 @@ export default class Matchstick extends Component {
         return (
             <div>
               <h1>Matchstick</h1>
+              <div id="solver-config">
+                Move <input/> matchsticks to make <input/> squares.
+              </div>
               {table}
             </div>
         );

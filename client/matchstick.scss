@@ -1,15 +1,22 @@
 /* *** */
 
-$matchstick-length: 80px;
-$matchstick-width: 10px;
+$matchstick-length: 100px;
+$matchstick-width: 15px;
                         
 * {
   box-sizing: border-box;
 }
 
 html, body {
-    margin: 0px;
+    margin: 1em;
     font-family: "Helvetica";
+}
+
+div#solver-config {
+    border: 1px solid #a0a0a0;
+    padding: 1em;
+    margin: 1em;
+    background: #e0ffe0;
 }
 
 table.playfield {
