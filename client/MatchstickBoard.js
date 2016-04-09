@@ -107,3 +107,43 @@ export function getAllEmptySticks(board) {
     return queryStickLocations(board, false);
 }
 
+function moveStick(board, from, to) {
+    let temp = setMatchStick(board, { x: from.get('x'), y: from.get('y') }, from.get('side'), false);
+
+    return setMatchStick(temp, { x: to.get('x'), y: to.get('y') }, to.get('side'), true);
+}
+
+function search0(boards, maxDepth, targetSquares) {
+    
+    let currentBoard = boards.last();
+
+    if (getSquares(currentBoard).size >= targetSquares) 
+        return boards;
+    
+    if (maxDepth <= 0)
+        return null;
+
+    let sticks = getAllSticks(currentBoard);
+    let emptySticks = getAllEmptySticks(currentBoard);
+    
+    for(let fromIndex = 0; fromIndex < sticks.size; fromIndex++) {
+        for(let toIndex = 0; toIndex < emptySticks.size; toIndex++) {
+
+            let newBoard = moveStick(currentBoard, sticks.get(fromIndex), emptySticks.get(toIndex));
+
+            if (boards.has(newBoard))
+                continue;
+            
+            let found = search0(boards.push(newBoard), maxDepth - 1, targetSquares);
+
+            if (found)
+                return found;
+        }
+    }
+
+    return null;
+}
+
+export function search(board, maxDepth, targetSquares) {
+    return search0(Immutable.List().push(board), maxDepth, targetSquares);
+}

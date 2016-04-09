@@ -10,7 +10,8 @@ import {
     getMatchStick,
     getSquares,
     getAllSticks,
-    getAllEmptySticks
+    getAllEmptySticks,
+    search
 } from './MatchstickBoard';
 
 import SquareList from './SquareList';
@@ -34,6 +35,15 @@ export default class Matchstick extends Component {
         };
     }
 
+    setBoard(newBoard) {
+        this.setState({
+            board: newBoard,
+            squares: getSquares(newBoard),
+            sticks: getAllSticks(newBoard),
+            emptySticks: getAllEmptySticks(newBoard)
+        });
+    }
+    
     getStickClickHandler(spos, side) {
         return () => {
             let board = this.state.board;
@@ -41,13 +51,8 @@ export default class Matchstick extends Component {
             let oldStick = getMatchStick(board, spos, side);
 
             let newBoard = setMatchStick(board, spos, side, !oldStick);
-
-            this.setState({
-                board: newBoard,
-                squares: getSquares(newBoard),
-                sticks: getAllSticks(newBoard),
-                emptySticks: getAllEmptySticks(newBoard)
-            });
+            
+            this.setBoard(newBoard);
         };
     }
     
@@ -98,6 +103,13 @@ export default class Matchstick extends Component {
         
         return <tr key={y + "-v"} className="vrow">{row}</tr>;
     }
+
+    doSearch() {
+        let newBoard = search(this.state.board, 1, 1);
+
+        if (newBoard)
+            this.setBoard(newBoard.last());
+    }
     
     render() {
         const board = this.state.board;
@@ -135,6 +147,10 @@ export default class Matchstick extends Component {
                 {this.state.emptySticks.size}
                 <SquareList squares={this.state.squares}/>
               </div>
+
+              <button onClick={this.doSearch.bind(this)}>
+                Go
+              </button>
             </div>
         );
     }
