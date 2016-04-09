@@ -21,24 +21,24 @@ function squareToBoard(pos, side) {
 }
 
 function createBoard(sx, sy) {
-    let row = Immutable.Repeat(false, sy * 3);
+    let row = Immutable.List(Immutable.Repeat(false, sy * 3));
 
     return Immutable.Map()
         .set('sx', sx)
         .set('sy', sy)
-        .set('board', Immutable.Repeat(row, sx + 1));
+        .set('board', Immutable.List(Immutable.Repeat(row, sx + 1)));
 }
 
 function setMatchStick(board, spos, side, present) {
     let { x, y } = squareToBoard(spos, side);
 
-    return board.setIn([x, y], present);
+    return board.setIn(['board', y, x], present);
 }
 
 function getMatchStick(board, spos, side) {
     let { x, y } = squareToBoard(spos, side);
 
-    return board.getIn([x, y]);
+    return board.getIn(['board', y, x]);
 }
 
 export default class Matchstick extends Component {
@@ -46,9 +46,9 @@ export default class Matchstick extends Component {
     constructor(props) {
         super(props);
 
-        this.state = {
-            board: createBoard(4, 4)
-        };
+        let board = createBoard(4, 4);
+
+        this.state = { board };
     }
 
     makeHRow(board, y, side) {
@@ -76,7 +76,7 @@ export default class Matchstick extends Component {
             row.push(<td key={x + "-m"}/>);
         }
 
-        row.push(<td key={sx + "-r"} className={classNames('v-matchstick', {'placed': getMatchStick(board, { sx, y }, 'left')})}/>);                
+        row.push(<td key={sx + "-r"} className={classNames('v-matchstick', {'placed': getMatchStick(board, { x : sx, y }, 'left')})}/>);                
         
         return <tr key={y + "-v"} className="vrow">{row}</tr>;
     }

@@ -24,4 +24,8 @@ table.playfield {
         height: $matchstick-length;
         border: 1px solid red;
     }
+
+    td.placed {
+        background: red;
+    }
 }
