@@ -9,9 +9,9 @@ import Immutable from 'immutable';
 
 import 'whatwg-fetch';
 
-import Matchstick from './Matchstick';
+import MatchstickGame from './MatchstickGame';
 
 import 'font-awesome/css/font-awesome.css';
 import './matchstick.scss';
 
-ReactDOM.render(<Matchstick/>, document.getElementById('root'));
+ReactDOM.render(<MatchstickGame/>, document.getElementById('root'));

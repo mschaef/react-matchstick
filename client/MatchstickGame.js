@@ -12,7 +12,7 @@ import {
     getAllSticks,
     getAllEmptySticks,
     search
-} from './MatchstickBoard';
+} from './MatchstickModel';
 
 import SquareList from './SquareList';
 
@@ -20,7 +20,7 @@ function FAIL(error) {
     console.error(error);
 }
 
-export default class Matchstick extends Component {
+export default class MatchstickGame extends Component {
 
     constructor(props) {
         super(props);

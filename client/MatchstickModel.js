@@ -121,7 +121,7 @@ function search0(boards, maxDepth, targetSquares) {
     
     let currentBoard = boards.last();
 
-    if ((getSquares(currentBoard).size >= targetSquares) && (maxDepth == 0))
+    if ((maxDepth == 0) && (getSquares(currentBoard).size >= targetSquares))
         return boards;
     
     if (maxDepth <= 0)
