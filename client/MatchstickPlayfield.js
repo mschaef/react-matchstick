@@ -25,19 +25,18 @@ function makeHRow(board, y, side, onClick) {
     
     let sx = board.get('sx');
     
-    for(let x = 0; x < sx; x++) {
+    for(let x = 0; x <= sx; x++) {
         let spos = { x, y };
             
         row.push(<td key={x + "-l"}/>);
-            
-        row.push(<td key={x + "-m"}
-                 onClick={bindClickHandler(onClick, spos, side)}
-                 className={classNames('h-matchstick', {
-                     'placed': getMatchStick(board, spos, side)
-                 })}/>);
+
+        if (x != sx)
+            row.push(<td key={x + "-m"}
+                     onClick={bindClickHandler(onClick, spos, side)}
+                     className={classNames('h-matchstick', {
+                         'placed': getMatchStick(board, spos, side)
+                     })}/>);
     }
-    
-    row.push(<td key={sx + "-r"}/>);
     
     return <tr key={y + "-" + side} className="hrow">{row}</tr>;
 }
@@ -47,7 +46,7 @@ function makeVRow(board, y, onClick) {
 
     let sx = board.get('sx');
         
-    for(let x = 0; x < sx; x++) {
+    for(let x = 0; x <= sx; x++) {
         let spos = { x, y };
             
         row.push(<td key={x + "-l"}
@@ -55,15 +54,10 @@ function makeVRow(board, y, onClick) {
                  className={classNames('v-matchstick', {
                      'placed': getMatchStick(board, spos, 'left')
                  })}/>);
-            
-        row.push(<td key={x + "-m"}/>);
-    }
 
-    row.push(<td key={sx + "-r"}
-             onClick={bindClickHandler(onClick, { x : sx, y}, 'left')}
-             className={classNames('v-matchstick', {
-                 'placed': getMatchStick(board, { x : sx, y }, 'left')
-             })}/>);
+        if (x != sx)
+            row.push(<td key={x + "-m"}/>);
+    }
     
     return <tr key={y + "-v"} className="vrow">{row}</tr>;
 }
@@ -73,13 +67,13 @@ export default function MatchstickPlayfield({board, onClick}) {
 
     let sy = board.get('sy');
         
-    for(let y = 0; y < sy; y++) {
+    for(let y = 0; y <= sy; y++) {
         rows.push(makeHRow(board, y, 'top', onClick));
-        rows.push(makeVRow(board, y, onClick));
-    }
 
-    rows.push(makeHRow(board, sy, 'top', onClick));
-        
+        if (y != sy) 
+            rows.push(makeVRow(board, y, onClick));
+    }
+    
     return (
         <table className="playfield">
           <tbody>
