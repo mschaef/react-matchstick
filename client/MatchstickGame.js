@@ -27,7 +27,10 @@ export default class MatchstickGame extends Component {
 
         let board = createBoard(4, 4);
 
-        this.state = { board };
+        this.state = {
+            board,
+            lastSearchTime : "N/A"
+        };
     }
 
     onStickClick(spos, side) {
@@ -41,10 +44,16 @@ export default class MatchstickGame extends Component {
     }
     
     doSearch() {
+        var startT = new Date().getTime();
+
         let results = search(this.state.board, 3, 2);
 
+        this.setState({ lastSearchTime: new Date().getTime() - startT });
+        
         if (results) {
-            this.setState({ board: results.last() });
+            this.setState({
+                board: results.last()
+            });
         }
     }
     
@@ -54,9 +63,8 @@ export default class MatchstickGame extends Component {
               <h1>Matchstick</h1>
               <div id="solver-config">
                 Move <input/> matchsticks to make <input/> squares.
-                <button onClick={this.doSearch.bind(this)}>
-                  Go
-                </button>
+                <button onClick={this.doSearch.bind(this)}>Go</button>
+                <span>Last Search Time: {this.state.lastSearchTime} msec.</span>
               </div>
               <div id="playfield">
                 <MatchstickPlayfield board={this.state.board} onClick={this.onStickClick.bind(this)}/>
