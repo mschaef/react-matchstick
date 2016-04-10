@@ -113,11 +113,15 @@ function moveStick(board, from, to) {
     return setMatchStick(temp, { x: to.get('x'), y: to.get('y') }, to.get('side'), true);
 }
 
+var count = 0;
+
 function search0(boards, maxDepth, targetSquares) {
+
+    count++;
     
     let currentBoard = boards.last();
 
-    if (getSquares(currentBoard).size >= targetSquares) 
+    if ((getSquares(currentBoard).size >= targetSquares) && (maxDepth == 0))
         return boards;
     
     if (maxDepth <= 0)
@@ -145,5 +149,11 @@ function search0(boards, maxDepth, targetSquares) {
 }
 
 export function search(board, maxDepth, targetSquares) {
-    return search0(Immutable.List().push(board), maxDepth, targetSquares);
+    count = 0;
+    
+    let result = search0(Immutable.List().push(board), maxDepth, targetSquares);
+
+    console.error("n=", count);
+    
+    return result;
 }

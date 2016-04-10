@@ -105,7 +105,7 @@ export default class Matchstick extends Component {
     }
 
     doSearch() {
-        let newBoard = search(this.state.board, 1, 1);
+        let newBoard = search(this.state.board, 3, 2);
 
         if (newBoard)
             this.setBoard(newBoard.last());
