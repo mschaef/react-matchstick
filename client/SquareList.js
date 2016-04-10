@@ -2,8 +2,15 @@ import Immutable from 'immutable';
 
 import React, { Component } from 'react';
 
-export default function SquareList({squares}) {
+import {
+    getSquares
+} from './MatchstickModel';
 
+
+export default function SquareList({board}) {
+
+    let squares = getSquares(board);
+    
     let squareRows = squares.map(square => (
         <tr>
           <td>{square.get('x')}</td>

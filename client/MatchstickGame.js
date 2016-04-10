@@ -8,7 +8,6 @@ import {
     createBoard,
     setMatchStick,
     getMatchStick,
-    getSquares,
     getAllSticks,
     getAllEmptySticks,
     search
@@ -28,23 +27,9 @@ export default class MatchstickGame extends Component {
 
         let board = createBoard(4, 4);
 
-        this.state = {
-            board,
-            squares: Immutable.List(),
-            sticks: Immutable.List(),
-            emptySticks: getAllEmptySticks(board)
-        };
+        this.state = { board };
     }
 
-    setBoard(newBoard) {
-        this.setState({
-            board: newBoard,
-            squares: getSquares(newBoard),
-            sticks: getAllSticks(newBoard),
-            emptySticks: getAllEmptySticks(newBoard)
-        });
-    }
-    
     onStickClick(spos, side) {
         let board = this.state.board;
 
@@ -52,14 +37,15 @@ export default class MatchstickGame extends Component {
 
         let newBoard = setMatchStick(board, spos, side, !oldStick);
             
-        this.setBoard(newBoard);
+        this.setState({ board: newBoard });
     }
     
     doSearch() {
-        let newBoard = search(this.state.board, 3, 2);
+        let results = search(this.state.board, 3, 2);
 
-        if (newBoard)
-            this.setBoard(newBoard.last());
+        if (results) {
+            this.setState({ board: results.last() });
+        }
     }
     
     render() {
@@ -68,19 +54,16 @@ export default class MatchstickGame extends Component {
               <h1>Matchstick</h1>
               <div id="solver-config">
                 Move <input/> matchsticks to make <input/> squares.
+                <button onClick={this.doSearch.bind(this)}>
+                  Go
+                </button>
               </div>
               <div id="playfield">
                 <MatchstickPlayfield board={this.state.board} onClick={this.onStickClick.bind(this)}/>
               </div>
               <div id="square-list">
-                {this.state.sticks.size} - 
-                {this.state.emptySticks.size}
-                <SquareList squares={this.state.squares}/>
+                <SquareList board={this.state.board}/>
               </div>
-
-              <button onClick={this.doSearch.bind(this)}>
-                Go
-              </button>
             </div>
         );
     }
