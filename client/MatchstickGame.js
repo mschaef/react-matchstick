@@ -27,7 +27,9 @@ export default class MatchstickGame extends Component {
 
         this.state = {
             board: this.getDefaultBoard(),
-            lastSearchTime : "N/A"
+            lastSearchTime : "N/A",
+            targetMatchSticks: "3",
+            targetSquares: "2"
         };
     }
 
@@ -57,11 +59,21 @@ export default class MatchstickGame extends Component {
             
         this.setState({ board: newBoard });
     }
+
+    onTargetMatchSticksChange(event) {
+        this.setState({ targetMatchSticks: event.target.value });
+    }
+
+    onTargetSquaresChange(event) {
+        this.setState({ targetSquares: event.target.value });
+    }
     
     doSearch() {
         var startT = new Date().getTime();
 
-        let results = search(this.state.board, 3, 2);
+        let results = search(this.state.board,
+                             parseInt(this.state.targetMatchSticks),
+                             parseInt(this.state.targetSquares));
 
         this.setState({ lastSearchTime: new Date().getTime() - startT });
         
@@ -81,7 +93,12 @@ export default class MatchstickGame extends Component {
             <div>
               <h1>Matchstick</h1>
               <div id="solver-config">
-                Move <input/> matchsticks to make <input/> squares.
+                Move <input value={this.state.targetMatchSticks}
+                            onChange={this.onTargetMatchSticksChange.bind(this)}/>
+                matchsticks to make <input value={this.state.targetSquares}
+                                           onChange={this.onTargetSquaresChange.bind(this)}/>
+                squares.
+                
                 <button onClick={this.doSearch.bind(this)}>Go</button>
                 <button onClick={this.doReset.bind(this)}>Reset</button>
                 <span>Last Search Time: {this.state.lastSearchTime} msec.</span>
