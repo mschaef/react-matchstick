@@ -25,7 +25,7 @@ function bindClickHandler(onClick, x, y, side) {
 function makeHRow(board, y, onClick) {
     let row = [];
     
-    let sx = board.get('sx');
+    let sx = board.sx;
     
     for(let x = 0; x <= sx; x++) {
         row.push(<td key={x + "-l"}/>);
@@ -44,7 +44,7 @@ function makeHRow(board, y, onClick) {
 function makeVRow(board, y, onClick) {
     let row = [];
 
-    let sx = board.get('sx');
+    let sx = board.sx;
         
     for(let x = 0; x <= sx; x++) {
         row.push(<td key={x + "-l"}
@@ -63,7 +63,7 @@ function makeVRow(board, y, onClick) {
 export default function MatchstickPlayfield({board, onClick}) {
     let rows = [];
 
-    let sy = board.get('sy');
+    let sy = board.sy;
         
     for(let y = 0; y <= sy; y++) {
         rows.push(makeHRow(board, y, onClick));

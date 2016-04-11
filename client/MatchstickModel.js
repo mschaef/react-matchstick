@@ -4,27 +4,36 @@ export const SIDE_LEFT = true;
 export const SIDE_TOP = false;
 
 export function createBoard(sx, sy) {
-    return Immutable.Map()
-        .set('sx', sx)
-        .set('sy', sy)
-        .set('board', Immutable.List(Immutable.Repeat(false, (sx * 3) * (sy + 1))));
+    return {
+        sx,
+        sy,
+        board: (new Array((sx * 3) * (sy + 1))).fill(false)
+    };
 }
 
 export function setMatchStick(board, x, y, sideLeft, present) {
-    let ofs = ((2 * x) + (sideLeft ? 0 : 1)) + (board.get('sx') * 3 * y);
+    let ofs = ((2 * x) + (sideLeft ? 0 : 1)) + (board.sx * 3 * y);
+
+    let newBoard = board.board.slice(0);
+
+    newBoard[ofs] = present;
     
-    return board.setIn(['board', ofs], present);
+    return {
+        sx: board.sx,
+        sy: board.sy,
+        board: newBoard
+    };
 }
 
 export function getMatchStick(board, x, y, sideLeft) {
-    let ofs = (2 * x) + (sideLeft ? 0 : 1) + (board.get('sx') * 3 * y);
+    let ofs = (2 * x) + (sideLeft ? 0 : 1) + (board.sx * 3 * y);
     
-    return board.getIn(['board', ofs]);
+    return board.board[ofs];
 }
 
 export function isSquareAt(board, x, y, size) {
             
-    let { sx, sy } = board.toJS();
+    let { sx, sy } = board;
 
     if ((x < 0) || (y < 0) || (x + size > sx) || (y + size > sy))
         return false;
@@ -49,7 +58,7 @@ export function isSquareAt(board, x, y, size) {
 }
 
 export function getSquares(board) {
-    let { sx, sy } = board.toJS();
+    let { sx, sy } = board;
 
     let squares = Immutable.List();
     
@@ -69,7 +78,7 @@ export function getSquares(board) {
 }
 
 function queryStickLocations(board, queryValue) {
-    let { sx, sy } = board.toJS();
+    let { sx, sy } = board;
 
     let sticks = Immutable.List();
 

@@ -59,8 +59,6 @@ export default class MatchstickGame extends Component {
 
         let newBoard = setMatchStick(board, x, y, side, !oldStick);
 
-        console.log("nb", newBoard.toJS());
-        
         this.setState({ board: newBoard });
     }
 
