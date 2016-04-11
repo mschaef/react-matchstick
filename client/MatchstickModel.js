@@ -4,24 +4,22 @@ export const SIDE_LEFT = true;
 export const SIDE_TOP = false;
 
 export function createBoard(sx, sy) {
-    let row = Immutable.List(Immutable.Repeat(false, sy * 3));
-
     return Immutable.Map()
         .set('sx', sx)
         .set('sy', sy)
-        .set('board', Immutable.List(Immutable.Repeat(row, sx + 1)));
+        .set('board', Immutable.List(Immutable.Repeat(false, (sx * 3) * (sy + 1))));
 }
 
 export function setMatchStick(board, x, y, sideLeft, present) {
-    let bx = (2 * x) + (sideLeft ? 0 : 1);
+    let ofs = ((2 * x) + (sideLeft ? 0 : 1)) + (board.get('sx') * 3 * y);
     
-    return board.setIn(['board', y, bx], present);
+    return board.setIn(['board', ofs], present);
 }
 
 export function getMatchStick(board, x, y, sideLeft) {
-    let bx = (2 * x) + (sideLeft ? 0 : 1);
+    let ofs = (2 * x) + (sideLeft ? 0 : 1) + (board.get('sx') * 3 * y);
     
-    return board.getIn(['board', y, bx]);
+    return board.getIn(['board', ofs]);
 }
 
 export function isSquareAt(board, x, y, size) {
