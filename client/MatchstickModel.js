@@ -3,13 +3,6 @@ import Immutable from 'immutable';
 export const SIDE_LEFT = true;
 export const SIDE_TOP = false;
 
-function squareToBoardX(x, sideLeft) {
-    if (sideLeft)
-        return 2 * x;
-    else
-        return 2 * x + 1;
-}
-
 export function createBoard(sx, sy) {
     let row = Immutable.List(Immutable.Repeat(false, sy * 3));
 
@@ -20,11 +13,15 @@ export function createBoard(sx, sy) {
 }
 
 export function setMatchStick(board, x, y, sideLeft, present) {
-    return board.setIn(['board', y, squareToBoardX(x, sideLeft)], present);
+    let bx = (2 * x) + (sideLeft ? 0 : 1);
+    
+    return board.setIn(['board', y, bx], present);
 }
 
 export function getMatchStick(board, x, y, sideLeft) {
-    return board.getIn(['board', y, squareToBoardX(x, sideLeft)]);
+    let bx = (2 * x) + (sideLeft ? 0 : 1);
+    
+    return board.getIn(['board', y, bx]);
 }
 
 export function isSquareAt(board, x, y, size) {
