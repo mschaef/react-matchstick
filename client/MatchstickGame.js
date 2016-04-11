@@ -25,14 +25,29 @@ export default class MatchstickGame extends Component {
     constructor(props) {
         super(props);
 
-        let board = createBoard(4, 4);
-
         this.state = {
-            board,
+            board: this.getDefaultBoard(),
             lastSearchTime : "N/A"
         };
     }
 
+    getDefaultBoard() {
+        let board = createBoard(4, 4);
+
+        board = setMatchStick(board, { x: 0, y: 1 }, 'left', true);
+        board = setMatchStick(board, { x: 1, y: 1 }, 'left', true);        
+        board = setMatchStick(board, { x: 0, y: 1 }, 'top', true);
+        board = setMatchStick(board, { x: 0, y: 2 }, 'top', true);
+        board = setMatchStick(board, { x: 1, y: 2 }, 'top', true);
+        board = setMatchStick(board, { x: 2, y: 2 }, 'top', true);
+        board = setMatchStick(board, { x: 1, y: 0 }, 'left', true);
+        board = setMatchStick(board, { x: 1, y: 0 }, 'top', true);
+        board = setMatchStick(board, { x: 2, y: 0 }, 'top', true);
+        board = setMatchStick(board, { x: 2, y: 1 }, 'top', true);        
+
+        return board;
+    }
+    
     onStickClick(spos, side) {
         let board = this.state.board;
 
@@ -56,6 +71,10 @@ export default class MatchstickGame extends Component {
             });
         }
     }
+
+    doReset() {
+        this.setState({ board: this.getDefaultBoard() });
+    }
     
     render() {
         return (
@@ -64,6 +83,7 @@ export default class MatchstickGame extends Component {
               <div id="solver-config">
                 Move <input/> matchsticks to make <input/> squares.
                 <button onClick={this.doSearch.bind(this)}>Go</button>
+                <button onClick={this.doReset.bind(this)}>Reset</button>
                 <span>Last Search Time: {this.state.lastSearchTime} msec.</span>
               </div>
               <div id="playfield">
