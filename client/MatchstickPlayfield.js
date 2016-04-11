@@ -11,34 +11,34 @@ import {
     getSquares,
     getAllSticks,
     getAllEmptySticks,
-    search
+    search,
+    SIDE_LEFT,
+    SIDE_TOP
 } from './MatchstickModel';
 
 import SquareList from './SquareList';
 
-function bindClickHandler(onClick, spos, side) {
-    return () => onClick(spos, side);
+function bindClickHandler(onClick, x, y, side) {
+    return () => onClick(x, y, side);
 }
 
-function makeHRow(board, y, side, onClick) {
+function makeHRow(board, y, onClick) {
     let row = [];
     
     let sx = board.get('sx');
     
     for(let x = 0; x <= sx; x++) {
-        let spos = { x, y };
-            
         row.push(<td key={x + "-l"}/>);
 
         if (x != sx)
             row.push(<td key={x + "-m"}
-                     onClick={bindClickHandler(onClick, spos, side)}
+                     onClick={bindClickHandler(onClick, x, y, SIDE_TOP)}
                      className={classNames('h-matchstick', {
-                         'placed': getMatchStick(board, spos, side)
+                         'placed': getMatchStick(board, x, y, SIDE_TOP)
                      })}/>);
     }
     
-    return <tr key={y + "-" + side} className="hrow">{row}</tr>;
+    return <tr key={y + "-t"} className="hrow">{row}</tr>;
 }
 
 function makeVRow(board, y, onClick) {
@@ -47,12 +47,10 @@ function makeVRow(board, y, onClick) {
     let sx = board.get('sx');
         
     for(let x = 0; x <= sx; x++) {
-        let spos = { x, y };
-            
         row.push(<td key={x + "-l"}
-                 onClick={bindClickHandler(onClick, spos, 'left')}
+                 onClick={bindClickHandler(onClick, x, y, SIDE_LEFT)}
                  className={classNames('v-matchstick', {
-                     'placed': getMatchStick(board, spos, 'left')
+                     'placed': getMatchStick(board, x, y, SIDE_LEFT)
                  })}/>);
 
         if (x != sx)
@@ -68,7 +66,7 @@ export default function MatchstickPlayfield({board, onClick}) {
     let sy = board.get('sy');
         
     for(let y = 0; y <= sy; y++) {
-        rows.push(makeHRow(board, y, 'top', onClick));
+        rows.push(makeHRow(board, y, onClick));
 
         if (y != sy) 
             rows.push(makeVRow(board, y, onClick));

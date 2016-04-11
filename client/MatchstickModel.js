@@ -1,15 +1,13 @@
 import Immutable from 'immutable';
 
-function squareToBoard(pos, side) {
-    let { x, y } = pos;
-    
-    switch(side) {
-    case 'top':    return { x: 2 * x + 1, y : y     };
-    case 'bottom': return { x: 2 * x + 1, y : y + 1 };
-    case 'left':   return { x: 2 * x    , y : y     };
-    case 'right':  return { x: 2 * x + 2, y : y     };
-    default: return FAIL("bad side: " + side);
-    }
+export const SIDE_LEFT = true;
+export const SIDE_TOP = false;
+
+function squareToBoardX(x, sideLeft) {
+    if (sideLeft)
+        return 2 * x;
+    else
+        return 2 * x + 1;
 }
 
 export function createBoard(sx, sy) {
@@ -21,42 +19,37 @@ export function createBoard(sx, sy) {
         .set('board', Immutable.List(Immutable.Repeat(row, sx + 1)));
 }
 
-export function setMatchStick(board, spos, side, present) {
-    let { x, y } = squareToBoard(spos, side);
-
-    return board.setIn(['board', y, x], present);
+export function setMatchStick(board, x, y, sideLeft, present) {
+    return board.setIn(['board', y, squareToBoardX(x, sideLeft)], present);
 }
 
-export function getMatchStick(board, spos, side) {
-    let { x, y } = squareToBoard(spos, side);
-
-    return board.getIn(['board', y, x]);
+export function getMatchStick(board, x, y, sideLeft) {
+    return board.getIn(['board', y, squareToBoardX(x, sideLeft)]);
 }
 
-export function isSquareAt(board, spos, size) {
-    let { x, y } = spos;
-
+export function isSquareAt(board, x, y, size) {
+            
     let { sx, sy } = board.toJS();
 
     if ((x < 0) || (y < 0) || (x + size > sx) || (y + size > sy))
         return false;
 
     for(let cx = x; cx < x + size; cx++) {
-        if (!getMatchStick(board, { x: cx, y }, 'top'))
+        if (!getMatchStick(board, cx, y, SIDE_TOP))
             return false;
 
-        if (!getMatchStick(board, { x: cx, y: y + size - 1}, 'bottom'))
+        if (!getMatchStick(board, cx, y + size, SIDE_TOP))
             return false;
     }
 
     for(let cy = y; cy < y + size; cy++) {
-        if (!getMatchStick(board, { x , y: cy }, 'left'))
+        if (!getMatchStick(board, x, cy, SIDE_LEFT))
             return false;
 
-        if (!getMatchStick(board, { x: x + size - 1, y: cy }, 'right'))
+        if (!getMatchStick(board, x + size, cy, SIDE_LEFT))
             return false;
     }
-
+    
     return true;
 }
 
@@ -70,7 +63,7 @@ export function getSquares(board) {
             let maxSize = Math.min(sx - cx, sy - cy);
 
             for(let size = 1; size <= maxSize; size++) {
-                if(isSquareAt(board, { x: cx, y: cy }, size)) {
+                if(isSquareAt(board, cx, cy, size)) {
                     squares = squares.push(Immutable.fromJS({ x: cx, y: cy, size }));
                 }
             }
@@ -87,12 +80,11 @@ function queryStickLocations(board, queryValue) {
 
     for(let cx = 0; cx <= sx; cx++) {
         for(let cy = 0; cy <= sy; cy++) {
-            
-            if ((cx < sx) && (getMatchStick(board, { x : cx, y : cy }, 'top') == queryValue))
-                sticks = sticks.push(Immutable.fromJS({ x : cx, y : cy , side: 'top'}));
+            if ((cx < sx) && (getMatchStick(board, cx, cy, SIDE_TOP) == queryValue))
+                sticks = sticks.push(Immutable.fromJS({ x : cx, y : cy , side: SIDE_TOP}));
 
-            if ((cy < sy) && (getMatchStick(board, { x : cx, y : cy }, 'left') == queryValue))
-                sticks = sticks.push(Immutable.fromJS({ x : cx, y : cy , side: 'left'}));
+            if ((cy < sy) && (getMatchStick(board, cx, cy, SIDE_LEFT) == queryValue))
+                sticks = sticks.push(Immutable.fromJS({ x : cx, y : cy , side: SIDE_LEFT}));
         }
     }
 
@@ -108,9 +100,9 @@ export function getAllEmptySticks(board) {
 }
 
 function moveStick(board, from, to) {
-    let temp = setMatchStick(board, { x: from.get('x'), y: from.get('y') }, from.get('side'), false);
+    let temp = setMatchStick(board, from.get('x'), from.get('y'), from.get('side'), false);
 
-    return setMatchStick(temp, { x: to.get('x'), y: to.get('y') }, to.get('side'), true);
+    return setMatchStick(temp, to.get('x'), to.get('y'), to.get('side'), true);
 }
 
 var count = 0;

@@ -10,7 +10,9 @@ import {
     getMatchStick,
     getAllSticks,
     getAllEmptySticks,
-    search
+    search,
+    SIDE_LEFT,
+    SIDE_TOP
 } from './MatchstickModel';
 
 import SquareList from './SquareList';
@@ -36,27 +38,29 @@ export default class MatchstickGame extends Component {
     getDefaultBoard() {
         let board = createBoard(4, 4);
 
-        board = setMatchStick(board, { x: 0, y: 1 }, 'left', true);
-        board = setMatchStick(board, { x: 1, y: 1 }, 'left', true);        
-        board = setMatchStick(board, { x: 0, y: 1 }, 'top', true);
-        board = setMatchStick(board, { x: 0, y: 2 }, 'top', true);
-        board = setMatchStick(board, { x: 1, y: 2 }, 'top', true);
-        board = setMatchStick(board, { x: 2, y: 2 }, 'top', true);
-        board = setMatchStick(board, { x: 1, y: 0 }, 'left', true);
-        board = setMatchStick(board, { x: 1, y: 0 }, 'top', true);
-        board = setMatchStick(board, { x: 2, y: 0 }, 'top', true);
-        board = setMatchStick(board, { x: 2, y: 1 }, 'top', true);        
-
+        board = setMatchStick(board, 0, 1, SIDE_LEFT, true);
+        board = setMatchStick(board, 1, 1, SIDE_LEFT, true);        
+        board = setMatchStick(board, 0, 1, SIDE_TOP , true);
+        board = setMatchStick(board, 0, 2, SIDE_TOP , true);
+        board = setMatchStick(board, 1, 2, SIDE_TOP , true);
+        board = setMatchStick(board, 2, 2, SIDE_TOP , true);
+        board = setMatchStick(board, 1, 0, SIDE_LEFT, true);
+        board = setMatchStick(board, 1, 0, SIDE_TOP , true);
+        board = setMatchStick(board, 2, 0, SIDE_TOP , true);
+        board = setMatchStick(board, 2, 1, SIDE_TOP , true);        
+        
         return board;
     }
     
-    onStickClick(spos, side) {
+    onStickClick(x, y, side) {
         let board = this.state.board;
 
-        let oldStick = getMatchStick(board, spos, side);
+        let oldStick = getMatchStick(board, x, y, side);
 
-        let newBoard = setMatchStick(board, spos, side, !oldStick);
-            
+        let newBoard = setMatchStick(board, x, y, side, !oldStick);
+
+        console.log("nb", newBoard.toJS());
+        
         this.setState({ board: newBoard });
     }
 
