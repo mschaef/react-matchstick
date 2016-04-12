@@ -28,6 +28,21 @@ export function boardDifference(boardX, boardY) {
     return result;
 }
 
+function boardsEqual(boardX, boardY) {
+    if (boardX.sx != boardY.sx)
+        return false;
+
+    if (boardX.sy != boardY.sy)
+        return false;
+
+    for(let ii = 0; ii < boardX.board.length; ii++) {
+        if (boardX.board[ii] != boardY.board[ii])
+            return false;
+    }
+
+    return true;
+}
+
 export function copyBoard(board) {
     return {
         sx: board.sx,
@@ -123,6 +138,26 @@ export function getSquares(board) {
     return squares;
 }
 
+export function countSquares(board) {
+    let { sx, sy } = board;
+
+    let squareCount = 0;
+    
+    for(let cx = 0; cx < sx; cx++) {
+        for(let cy = 0; cy < sy; cy++) {
+            let maxSize = Math.min(sx - cx, sy - cy);
+
+            for(let size = 1; size <= maxSize; size++) {
+                if(isSquareAt(board, cx, cy, size)) {
+                    squareCount++;
+                }
+            }
+        }
+    }
+
+    return squareCount;
+}
+
 export function setSquares(board, squares) {
     return squares.reduce((board, square) => setSquare(board, square.get('x'), square.get('y'), square.get('size')), board);
 }
@@ -173,33 +208,16 @@ function moveStick(board, from, to) {
     return newBoard;
 }
 
-function boardsEqual(boardX, boardY) {
-    if (boardX.sx != boardY.sx)
-        return false;
-
-    if (boardX.sy != boardY.sy)
-        return false;
-
-    for(let ii = 0; ii < boardX.board.length; ii++) {
-        if (boardX.board[ii] != boardY.board[ii])
-            return false;
-    }
-
-    return true;
-}
-
 var count = 0;
 var squareTestCount = 0;
 
 function boardMeetsSearchCriteria(board, targetSquares) {
-    let squares = getSquares(board);
-
-    if (squares.size != targetSquares)
+    if (countSquares(board) != targetSquares)
         return false;
 
     squareTestCount++;
 
-    let testBoard = setSquares(createBoard(board.sx, board.sy), squares);    
+    let testBoard = setSquares(createBoard(board.sx, board.sy), getSquares(board));
 
     return boardsEqual(board, testBoard);
 }
