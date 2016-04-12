@@ -10,6 +10,8 @@ import {
     getMatchStick,
     getAllSticks,
     getAllEmptySticks,
+    getSquares,
+    setSquares,
     search,
     SIDE_LEFT,
     SIDE_TOP
@@ -17,10 +19,6 @@ import {
 
 import SquareList from './SquareList';
 import MatchstickPlayfield from './MatchstickPlayfield';
-
-function FAIL(error) {
-    console.error(error);
-}
 
 export default class MatchstickGame extends Component {
 
@@ -89,6 +87,16 @@ export default class MatchstickGame extends Component {
     doReset() {
         this.setState({ board: this.getDefaultBoard() });
     }
+
+    doSquarify() {
+        let currentBoard = this.state.board;
+
+        let squares = getSquares(currentBoard);
+
+        let newBoard = setSquares(createBoard(currentBoard.sx, currentBoard.sy), squares);
+
+        this.setState({ board: newBoard });
+    }
     
     render() {
         return (
@@ -103,6 +111,8 @@ export default class MatchstickGame extends Component {
                 
                 <button onClick={this.doSearch.bind(this)}>Go</button>
                 <button onClick={this.doReset.bind(this)}>Reset</button>
+                <button onClick={this.doSquarify.bind(this)}>Squarify</button>
+                
                 <span>Last Search Time: {this.state.lastSearchTime} msec.</span>
               </div>
               <div id="playfield">

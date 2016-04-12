@@ -1,5 +1,9 @@
 import Immutable from 'immutable';
 
+function FAIL(error) {
+    throw new Exception(error);
+}
+
 export const SIDE_LEFT = true;
 export const SIDE_TOP = false;
 
@@ -11,18 +15,39 @@ export function createBoard(sx, sy) {
     };
 }
 
-export function setMatchStick(board, x, y, sideLeft, present) {
-    let ofs = ((2 * x) + (sideLeft ? 0 : 1)) + (board.sx * 3 * y);
+export function boardDifference(boardX, boardY) {
+    if ((boardX.sx != boardY.sx) || (boardX.sy != boardY.sy))
+        FAIL("Boards of differing sizes");
 
-    let newBoard = board.board.slice(0);
+    let result = createBoard(boardX.sx, boardY.sy);
 
-    newBoard[ofs] = present;
-    
+    for(let ii = 0; ii < boardX.board.length; ii++) {
+        result.board[ii] = boardX.board[ii] && !boardY.board[ii];
+    }
+
+    return result;
+}
+
+export function copyBoard(board) {
     return {
         sx: board.sx,
         sy: board.sy,
-        board: newBoard
+        board: board.board.slice(0)
     };
+        
+}
+
+export function _setMatchStick(board, x, y, sideLeft, present) {
+    let ofs = ((2 * x) + (sideLeft ? 0 : 1)) + (board.sx * 3 * y);
+    board.board[ofs] = present;
+}
+
+export function setMatchStick(board, x, y, sideLeft, present) {
+    let newBoard = copyBoard(board);
+    
+    _setMatchStick(newBoard, x, y, sideLeft, present);
+    
+    return newBoard;
 }
 
 export function getMatchStick(board, x, y, sideLeft) {
@@ -57,6 +82,27 @@ export function isSquareAt(board, x, y, size) {
     return true;
 }
 
+export function setSquare(board, x, y, size) {
+    let newBoard = copyBoard(board);
+
+    let { sx, sy } = board;
+
+    if ((x < 0) || (y < 0) || (x + size > sx) || (y + size > sy))
+        FAIL("Square parameters out of range.");
+
+    for(let cx = x; cx < x + size; cx++) {
+        _setMatchStick(newBoard, cx, y, SIDE_TOP, true);
+        _setMatchStick(newBoard, cx, y + size, SIDE_TOP, true);
+    }
+
+    for(let cy = y; cy < y + size; cy++) {
+        _setMatchStick(newBoard, x, cy, SIDE_LEFT, true);
+        _setMatchStick(newBoard, x + size, cy, SIDE_LEFT, true);
+    }
+
+    return newBoard;
+}
+
 export function getSquares(board) {
     let { sx, sy } = board;
 
@@ -75,6 +121,10 @@ export function getSquares(board) {
     }
 
     return squares;
+}
+
+export function setSquares(board, squares) {
+    return squares.reduce((board, square) => setSquare(board, square.get('x'), square.get('y'), square.get('size')), board);
 }
 
 function queryStickLocations(board, queryValue) {
@@ -103,10 +153,24 @@ export function getAllEmptySticks(board) {
     return queryStickLocations(board, false);
 }
 
-function moveStick(board, from, to) {
-    let temp = setMatchStick(board, from.get('x'), from.get('y'), from.get('side'), false);
+export function countSticks(board) {
+    let counter = 0;
 
-    return setMatchStick(temp, to.get('x'), to.get('y'), to.get('side'), true);
+    for(let ii = 0; ii < board.board.length; ii++) {
+        if (board.board[ii])
+            counter++;
+    }
+
+    return counter;
+}
+
+function moveStick(board, from, to) {
+    let newBoard = copyBoard(board);
+    
+    _setMatchStick(newBoard, from.get('x'), from.get('y'), from.get('side'), false);
+    _setMatchStick(newBoard, to.get('x'), to.get('y'), to.get('side'), true);
+
+    return newBoard;
 }
 
 var count = 0;
