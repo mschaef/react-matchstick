@@ -190,7 +190,7 @@ function search0(boards, maxDepth, targetSquares) {
     
     let currentBoard = boards.last();
 
-    if ((getSquares(currentBoard).size >= targetSquares) && isFullySquarable(currentBoard))
+    if ((getSquares(currentBoard).size == targetSquares) && isFullySquarable(currentBoard))
         return boards;
     
     if (maxDepth <= 0)
