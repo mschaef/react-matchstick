@@ -11,7 +11,8 @@ export function createBoard(sx, sy) {
     return {
         sx,
         sy,
-        board: (new Array((sx * 3) * (sy + 1))).fill(false)
+        board: (new Array((sx * 3) * (sy + 1))).fill(false),
+        prev: null
     };
 }
 
@@ -47,9 +48,20 @@ export function copyBoard(board) {
     return {
         sx: board.sx,
         sy: board.sy,
-        board: board.board.slice(0)
+        board: board.board.slice(0),
+        prev: board
     };
-        
+}
+
+function findBoardInHistory(boards, board) {
+    while(boards != null) {
+        if (boardsEqual(boards, board))
+            return true;
+
+        boards = boards.prev;
+    }
+    
+    return false;
 }
 
 export function _setMatchStick(board, x, y, sideLeft, present) {
@@ -165,15 +177,15 @@ export function setSquares(board, squares) {
 function queryStickLocations(board, queryValue) {
     let { sx, sy } = board;
 
-    let sticks = Immutable.List();
+    let sticks = [];
 
     for(let cx = 0; cx <= sx; cx++) {
         for(let cy = 0; cy <= sy; cy++) {
             if ((cx < sx) && (getMatchStick(board, cx, cy, SIDE_TOP) == queryValue))
-                sticks = sticks.push(Immutable.fromJS({ x : cx, y : cy , side: SIDE_TOP}));
+                sticks.push({ x : cx, y : cy , side: SIDE_TOP});
 
             if ((cy < sy) && (getMatchStick(board, cx, cy, SIDE_LEFT) == queryValue))
-                sticks = sticks.push(Immutable.fromJS({ x : cx, y : cy , side: SIDE_LEFT}));
+                sticks.push({ x : cx, y : cy , side: SIDE_LEFT});
         }
     }
 
@@ -202,8 +214,8 @@ export function countSticks(board) {
 function moveStick(board, from, to) {
     let newBoard = copyBoard(board);
     
-    _setMatchStick(newBoard, from.get('x'), from.get('y'), from.get('side'), false);
-    _setMatchStick(newBoard, to.get('x'), to.get('y'), to.get('side'), true);
+    _setMatchStick(newBoard, from.x, from.y, from.side, false);
+    _setMatchStick(newBoard, to.x, to.y, to.side, true);
 
     return newBoard;
 }
@@ -226,28 +238,26 @@ function boardMeetsSearchCriteria(board, targetSquares) {
 function search0(boards, maxDepth, targetSquares) {
 
     count++;
-    
-    let currentBoard = boards.last();
 
-    if (boardMeetsSearchCriteria(currentBoard, targetSquares))        
+    if (boardMeetsSearchCriteria(boards, targetSquares))        
         return boards;
     
     if (maxDepth <= 0)
         return null;
 
-    let sticks = getAllSticks(currentBoard);
-    let emptySticks = getAllEmptySticks(currentBoard);
+    let sticks = getAllSticks(boards);
+    let emptySticks = getAllEmptySticks(boards);
     
-    for(let fromIndex = 0; fromIndex < sticks.size; fromIndex++) {
-        for(let toIndex = 0; toIndex < emptySticks.size; toIndex++) {
+    for(let fromIndex = 0; fromIndex < sticks.length; fromIndex++) {
+        for(let toIndex = 0; toIndex < emptySticks.length; toIndex++) {
 
-            let newBoard = moveStick(currentBoard, sticks.get(fromIndex), emptySticks.get(toIndex));
+            let newBoard = moveStick(boards, sticks[fromIndex], emptySticks[toIndex]);
 
-            if (boards.has(newBoard))
+            if (findBoardInHistory(boards, newBoard))
                 continue;
+                
+            let found = search0(newBoard, maxDepth - 1, targetSquares);
             
-            let found = search0(boards.push(newBoard), maxDepth - 1, targetSquares);
-
             if (found)
                 return found;
         }
@@ -260,7 +270,7 @@ export function search(board, maxDepth, targetSquares) {
     count = 0;
     squareTestCount = 0;
     
-    let result = search0(Immutable.List().push(board), maxDepth, targetSquares);
+    let result = search0(board, maxDepth, targetSquares);
 
     console.error("n=", count, squareTestCount);
     

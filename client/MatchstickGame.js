@@ -102,7 +102,7 @@ export default class MatchstickGame extends Component {
         
         if (results) {
             this.setState({
-                board: results.last()
+                board: results
             });
         }
     }
