@@ -173,16 +173,37 @@ function moveStick(board, from, to) {
     return newBoard;
 }
 
-function isFullySquarable(board) {
-    let squares = getSquares(board);
+function boardsEqual(boardX, boardY) {
+    if (boardX.sx != boardY.sx)
+        return false;
 
-    let testBoard = setSquares(createBoard(board.sx, board.sy), squares);
+    if (boardX.sy != boardY.sy)
+        return false;
 
-    return countSticks(boardDifference(board, testBoard)) == 0;
+    for(let ii = 0; ii < boardX.board.length; ii++) {
+        if (boardX.board[ii] != boardY.board[ii])
+            return false;
+    }
+
+    return true;
 }
 
-
 var count = 0;
+var squareTestCount = 0;
+
+function boardMeetsSearchCriteria(board, targetSquares) {
+    let squares = getSquares(board);
+
+    if (squares.size != targetSquares)
+        return false;
+
+    squareTestCount++;
+
+    let testBoard = setSquares(createBoard(board.sx, board.sy), squares);    
+
+    return boardsEqual(board, testBoard);
+}
+
 
 function search0(boards, maxDepth, targetSquares) {
 
@@ -190,7 +211,7 @@ function search0(boards, maxDepth, targetSquares) {
     
     let currentBoard = boards.last();
 
-    if ((getSquares(currentBoard).size == targetSquares) && isFullySquarable(currentBoard))
+    if (boardMeetsSearchCriteria(currentBoard, targetSquares))        
         return boards;
     
     if (maxDepth <= 0)
@@ -219,10 +240,11 @@ function search0(boards, maxDepth, targetSquares) {
 
 export function search(board, maxDepth, targetSquares) {
     count = 0;
+    squareTestCount = 0;
     
     let result = search0(Immutable.List().push(board), maxDepth, targetSquares);
 
-    console.error("n=", count);
+    console.error("n=", count, squareTestCount);
     
     return result;
 }
