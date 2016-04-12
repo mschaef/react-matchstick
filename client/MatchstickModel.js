@@ -173,6 +173,15 @@ function moveStick(board, from, to) {
     return newBoard;
 }
 
+function isFullySquarable(board) {
+    let squares = getSquares(board);
+
+    let testBoard = setSquares(createBoard(board.sx, board.sy), squares);
+
+    return countSticks(boardDifference(board, testBoard)) == 0;
+}
+
+
 var count = 0;
 
 function search0(boards, maxDepth, targetSquares) {
@@ -181,7 +190,7 @@ function search0(boards, maxDepth, targetSquares) {
     
     let currentBoard = boards.last();
 
-    if ((maxDepth == 0) && (getSquares(currentBoard).size >= targetSquares))
+    if ((getSquares(currentBoard).size >= targetSquares) && isFullySquarable(currentBoard))
         return boards;
     
     if (maxDepth <= 0)
