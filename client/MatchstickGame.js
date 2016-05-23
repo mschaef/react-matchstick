@@ -63,11 +63,13 @@ export default class MatchstickGame extends Component {
     constructor(props) {
         super(props);
 
+        const boardInfo = getBoardByName("Simple");
+
         this.state = {
-            board: getBoardByName("Simple"),
+            board: boardInfo.board,
             lastSearchTime : "N/A",
-            targetMatchSticks: "3",
-            targetSquares: "2"
+            targetMatchSticks: boardInfo.targetMatchSticks,
+            targetSquares: boardInfo.targetSquares
         };
     }
 
@@ -106,7 +108,14 @@ export default class MatchstickGame extends Component {
     }
 
     doReset(boardName) {
-        this.setState({ board: getBoardByName(boardName) });
+
+        const boardInfo = getBoardByName(boardName);
+        
+        this.setState({
+            board: boardInfo.board,
+            targetMatchSticks: boardInfo.targetMatchSticks,
+            targetSquares: boardInfo.targetSquares
+        });
     }
 
     doSquarify() {

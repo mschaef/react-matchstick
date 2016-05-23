@@ -22,7 +22,7 @@ const standardBoards = {
             { x: 2, y:0, side: SIDE_TOP  },
             { x: 2, y:1, side: SIDE_TOP  }
         ],
-        params: { sticksToMove: 3, squaresToMake: 2 }
+        params: { targetMatchSticks: 3, targetSquares: 2 }
     },
     "Complex": {
         size: { x: 4, y: 4},
@@ -43,7 +43,7 @@ const standardBoards = {
             { x: 1, y: 0, side: SIDE_TOP  },
             { x: 2, y: 0, side: SIDE_TOP  }
         ],
-        params: { sticksToMove: 3, squaresToMake: 2 }    
+        params: { targetMatchSticks: 3, targetSquares: 2 }    
     }
 };
 
@@ -66,5 +66,11 @@ export function getBoardNames() {
 }
 
 export function getBoardByName(boardName) {
-    return getBoard(standardBoards[boardName]);
+    const boardDefinition = standardBoards[boardName];
+    
+    return {
+        board: getBoard(boardDefinition),
+        targetMatchSticks: boardDefinition.params.targetMatchSticks,
+        targetSquares: boardDefinition.params.targetSquares
+    };
 }
