@@ -5,8 +5,6 @@ if (module.hot) {
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import Immutable from 'immutable';
-
 import 'whatwg-fetch';
 
 import MatchstickGame from './MatchstickGame';

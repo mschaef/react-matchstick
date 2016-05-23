@@ -1,5 +1,3 @@
-import Immutable from 'immutable';
-
 import React, { Component } from 'react';
 
 import {
