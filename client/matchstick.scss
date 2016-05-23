@@ -15,7 +15,7 @@ html, body {
 div.solver-controls {
     border: 1px solid #a0a0a0;
     padding: 0.5em;
-    margin: 0.5em;
+    margin-bottom: 0.5em;
     background: #e0ffe0;
 
     input {
@@ -47,6 +47,10 @@ div.square-list {
     }
 }
 
+div#selector {
+    float: left;
+}
+
 div#playfield {
     float: left;
 
@@ -65,6 +69,22 @@ div#playfield {
 
         td.placed {
             background: red;
+        }
+    }
+}
+
+div.board-selector {
+    margin-right: 1em;
+    
+    div.board-name {
+        border: 1px solid #ccc;
+        background: #eee;
+        padding: 0.33em;
+        margin-bottom: 0.33em;
+        cursor: hand;
+        
+        &:hover {
+            background: #ddd;
         }
     }
 }

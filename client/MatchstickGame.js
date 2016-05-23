@@ -23,47 +23,26 @@ import {
 import SquareList from './SquareList';
 import MatchstickPlayfield from './MatchstickPlayfield';
 
-class BoardSelector extends Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            selected: "Simple"
-        };
-    }
-
-    onSelectChange(event) {
-        this.setState({selected: event.target.value});
-    }
-    
-    render() {
-    
-        const entries = getBoardNames().map(name => {
-            return <option value={name} key={name}>
-                {name}
-            </option>;
-        });
+function BoardSelector({onReset}) {
+    const entries = getBoardNames().map(name => {
+        return <div className="board-name" key={name} onClick={() => onReset(name)}>
+            {name}
+        </div>;
+    });
                                         
-        return (
-            <span>
-              <select value={this.state.selected}
-                      onChange={this.onSelectChange.bind(this)}>
-                {entries}
-              </select>
-              <button onClick={() => this.props.onReset(this.state.selected)}>
-                Reset
-              </button>
-            </span>
-        );
-    }
-}
+    return (
+        <div className="board-selector">
+          {entries}
+        </div>
+    );
+};
 
 export default class MatchstickGame extends Component {
 
     constructor(props) {
         super(props);
 
-        const boardInfo = getBoardByName("Simple");
+        const boardInfo = getBoardByName("1 - Simple");
 
         this.state = {
             board: boardInfo.board,
@@ -108,7 +87,6 @@ export default class MatchstickGame extends Component {
     }
 
     doReset(boardName) {
-
         const boardInfo = getBoardByName(boardName);
         
         this.setState({
@@ -133,8 +111,6 @@ export default class MatchstickGame extends Component {
             <div>
               <h1>Matchstick</h1>
               <div className="solver-controls">
-                <BoardSelector onReset={this.doReset.bind(this)}/>
-                
                 Move <input value={this.state.targetMatchSticks}
                             onChange={this.onTargetMatchSticksChange.bind(this)}/>
                 matchsticks to make <input value={this.state.targetSquares}
@@ -147,8 +123,13 @@ export default class MatchstickGame extends Component {
 
               <div className="solver-controls">
                 <span>Last Search Time: {this.state.lastSearchTime} msec.</span>              </div>
-              
+
+              <div id="selector">
+                <BoardSelector onReset={this.doReset.bind(this)}/>
+              </div>
               <div id="playfield">
+                
+                
                 <MatchstickPlayfield board={this.state.board}
                                      onClick={this.onStickClick.bind(this)}/>
               </div>

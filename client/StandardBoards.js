@@ -8,7 +8,7 @@ import {
 } from './MatchstickModel';
 
 const standardBoards = {
-    "Simple" : {
+    "1 - Simple" : {
         size: { x: 4, y: 4 },
         sticks: [
             { x: 0, y:1, side: SIDE_LEFT },
@@ -24,7 +24,7 @@ const standardBoards = {
         ],
         params: { targetMatchSticks: 3, targetSquares: 2 }
     },
-    "Complex": {
+    "2 - Complex": {
         size: { x: 4, y: 4},
         sticks: [
             { x: 0, y: 0, side: SIDE_LEFT },
@@ -44,6 +44,78 @@ const standardBoards = {
             { x: 2, y: 0, side: SIDE_TOP  }
         ],
         params: { targetMatchSticks: 3, targetSquares: 2 }    
+    },
+    "2 - Not So Complex": {
+        size: { x: 3, y: 3 },
+        sticks: [
+            { x: 0, y: 0, side: SIDE_LEFT },
+            { x: 0, y: 1, side: SIDE_LEFT },
+            { x: 0, y: 2, side: SIDE_LEFT },
+            { x: 0, y: 3, side: SIDE_TOP  },
+            { x: 1, y: 3, side: SIDE_TOP  },
+            { x: 2, y: 3, side: SIDE_TOP  },
+            { x: 1, y: 0, side: SIDE_LEFT },
+            { x: 1, y: 1, side: SIDE_LEFT },
+            { x: 1, y: 2, side: SIDE_TOP  },
+            { x: 2, y: 1, side: SIDE_LEFT },
+            { x: 3, y: 0, side: SIDE_LEFT },
+            { x: 3, y: 1, side: SIDE_LEFT },
+            { x: 3, y: 2, side: SIDE_LEFT },
+            { x: 1, y: 0, side: SIDE_TOP  },
+            { x: 2, y: 0, side: SIDE_TOP  }
+        ],
+        params: { targetMatchSticks: 3, targetSquares: 2 }    
+    },
+    "4 - Squares": {
+        size: { x: 4, y: 4},
+        sticks: [
+            { x: 2, y: 0, side: SIDE_LEFT },
+            { x: 3, y: 0, side: SIDE_LEFT },
+            { x: 4, y: 0, side: SIDE_LEFT },
+            { x: 0, y: 1, side: SIDE_LEFT },
+            { x: 1, y: 1, side: SIDE_LEFT },
+            { x: 2, y: 1, side: SIDE_LEFT },
+            { x: 3, y: 1, side: SIDE_LEFT },
+
+            { x: 2, y: 0, side: SIDE_TOP  },
+            { x: 3, y: 0, side: SIDE_TOP  },            
+
+            { x: 0, y: 1, side: SIDE_TOP  },
+            { x: 1, y: 1, side: SIDE_TOP  },
+            { x: 2, y: 1, side: SIDE_TOP  },
+            { x: 3, y: 1, side: SIDE_TOP  },
+            
+            { x: 0, y: 2, side: SIDE_TOP  },
+            { x: 1, y: 2, side: SIDE_TOP  },
+            { x: 2, y: 2, side: SIDE_TOP  }
+        ],
+        params: { targetMatchSticks: 2, targetSquares: 4 }    
+    },
+    "5 - Concentric": {
+        size: { x: 4, y: 4},
+        sticks: [
+            { x: 0, y: 0, side: SIDE_TOP  },
+            { x: 1, y: 0, side: SIDE_TOP  },
+            { x: 2, y: 0, side: SIDE_TOP  },
+
+            { x: 0, y: 3, side: SIDE_TOP  },
+            { x: 1, y: 3, side: SIDE_TOP  },
+            { x: 2, y: 3, side: SIDE_TOP  },
+            
+            { x: 0, y: 0, side: SIDE_LEFT },
+            { x: 0, y: 1, side: SIDE_LEFT },
+            { x: 0, y: 2, side: SIDE_LEFT },
+
+            { x: 3, y: 0, side: SIDE_LEFT },
+            { x: 3, y: 1, side: SIDE_LEFT },
+            { x: 3, y: 2, side: SIDE_LEFT },
+
+            { x: 1, y: 1, side: SIDE_TOP  },            
+            { x: 1, y: 1, side: SIDE_LEFT },            
+            { x: 1, y: 2, side: SIDE_TOP  },            
+            { x: 2, y: 1, side: SIDE_LEFT }
+        ],
+        params: { targetMatchSticks: 4, targetSquares: 3}
     }
 };
 
