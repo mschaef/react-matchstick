@@ -33,7 +33,7 @@ function makeHRow(board, y, onClick) {
                      onClick={bindClickHandler(onClick, x, y, SIDE_TOP)}
                      className={classNames('h-matchstick', {
                          'placed': getMatchStick(board, x, y, SIDE_TOP)
-                     })}/>);
+                     })}>&nbsp;</td>);
     }
     
     return <tr key={y + "-t"} className="hrow">{row}</tr>;
@@ -49,7 +49,7 @@ function makeVRow(board, y, onClick) {
                  onClick={bindClickHandler(onClick, x, y, SIDE_LEFT)}
                  className={classNames('v-matchstick', {
                      'placed': getMatchStick(board, x, y, SIDE_LEFT)
-                 })}/>);
+                 })}>&nbsp;</td>);
 
         if (x != sx)
             row.push(<td key={x + "-m"}/>);
