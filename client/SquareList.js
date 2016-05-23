@@ -18,15 +18,20 @@ export default function SquareList({board}) {
     ));
     
     return (
-        <table>
-          <tbody>
-            <tr>
-              <th>X</th>
-              <th>Y</th>
-              <th>Size</th>
-            </tr>
-            {squareRows}
-          </tbody>
-        </table>
+        <div className="square-list">
+          <div className="list-title">
+            Squares
+          </div>
+          <table>
+            <tbody>
+              <tr>
+                <th>X</th>
+                <th>Y</th>
+                <th>Size</th>
+              </tr>
+              {squareRows}
+            </tbody>
+          </table>
+        </div>
     );
 }

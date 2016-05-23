@@ -1,6 +1,6 @@
 /* *** */
 
-$matchstick-length: 100px;
+$matchstick-length: 80px;
 $matchstick-width: 15px;
                         
 * {
@@ -8,18 +8,26 @@ $matchstick-width: 15px;
 }
 
 html, body {
-    margin: 1em;
+    margin: 0.5em;
     font-family: "Helvetica";
 }
 
-div#solver-config {
+div.solver-controls {
     border: 1px solid #a0a0a0;
-    padding: 1em;
-    margin: 1em;
+    padding: 0.5em;
+    margin: 0.5em;
     background: #e0ffe0;
+
+    input {
+        width: 3em;
+    }
+    
+    button {
+        width: 6em;
+    }
 }
 
-div#square-list {
+div.square-list {
     float: left;
     padding-left: 1em;
 
@@ -30,6 +38,12 @@ div#square-list {
     
     th {
         font-weight: bold;
+    }
+
+    div.list-title {
+        font-weight: bold;        
+        text-align: center;
+        padding: 0.5em;
     }
 }
 

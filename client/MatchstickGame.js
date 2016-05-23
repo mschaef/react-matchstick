@@ -87,7 +87,7 @@ export default class MatchstickGame extends Component {
         return (
             <div>
               <h1>Matchstick</h1>
-              <div id="solver-config">
+              <div className="solver-controls">                
                 Move <input value={this.state.targetMatchSticks}
                             onChange={this.onTargetMatchSticksChange.bind(this)}/>
                 matchsticks to make <input value={this.state.targetSquares}
@@ -97,15 +97,16 @@ export default class MatchstickGame extends Component {
                 <button onClick={this.doSearch.bind(this)}>Go</button>
                 <button onClick={this.doReset.bind(this)}>Reset</button>
                 <button onClick={this.doSquarify.bind(this)}>Squarify</button>
-                
-                <span>Last Search Time: {this.state.lastSearchTime} msec.</span>
               </div>
+
+              <div className="solver-controls">
+                <span>Last Search Time: {this.state.lastSearchTime} msec.</span>              </div>
+              
               <div id="playfield">
-                <MatchstickPlayfield board={this.state.board} onClick={this.onStickClick.bind(this)}/>
+                <MatchstickPlayfield board={this.state.board}
+                                     onClick={this.onStickClick.bind(this)}/>
               </div>
-              <div id="square-list">
-                <SquareList board={this.state.board}/>
-              </div>
+              <SquareList board={this.state.board}/>
             </div>
         );
     }

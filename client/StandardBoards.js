@@ -24,7 +24,8 @@ const defaultBoard = {
         { x: 3, y: 2, side: SIDE_LEFT },
         { x: 1, y: 0, side: SIDE_TOP  },
         { x: 2, y: 0, side: SIDE_TOP  }
-    ]
+    ],
+    params: { sticksToMove: 3, squaresToMake: 2 }    
 };
 
 const auxBoard = {
@@ -40,7 +41,8 @@ const auxBoard = {
         { x: 1, y:0, side: SIDE_TOP  },
         { x: 2, y:0, side: SIDE_TOP  },
         { x: 2, y:1, side: SIDE_TOP  }
-    ]
+    ],
+    params: { sticksToMove: 3, squaresToMake: 2 }
 };
 
 function getBoard(boardDefinition) {
