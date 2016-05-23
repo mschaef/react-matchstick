@@ -274,5 +274,5 @@ export function search(board, maxDepth, targetSquares) {
 
     console.error("n=", count, squareTestCount);
     
-    return result;
+    return { result, count, squareTestCount };
 }

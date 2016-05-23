@@ -27,6 +27,7 @@ div.solver-controls {
     }
 }
 
+
 div.square-list {
     float: left;
     padding-left: 1em;
@@ -45,6 +46,10 @@ div.square-list {
         text-align: center;
         padding: 0.5em;
     }
+}
+
+div#square-list {
+    float: left;
 }
 
 div#selector {
@@ -87,4 +92,12 @@ div.board-selector {
             background: #ddd;
         }
     }
+}
+
+td.label {
+    font-weight: bold;
+}
+
+table.stats {
+    padding: 1em;
 }

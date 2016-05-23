@@ -73,16 +73,19 @@ export default class MatchstickGame extends Component {
     doSearch() {
         var startT = new Date().getTime();
 
-        let results = search(this.state.board,
-                             parseInt(this.state.targetMatchSticks),
-                             parseInt(this.state.targetSquares));
+        let { result, count, squareTestCount }
+                = search(this.state.board,
+                         parseInt(this.state.targetMatchSticks),
+                         parseInt(this.state.targetSquares));
 
-        this.setState({ lastSearchTime: new Date().getTime() - startT });
+        this.setState({
+            lastSearchTime: new Date().getTime() - startT,
+            count,
+            squareTestCount
+        });
         
-        if (results) {
-            this.setState({
-                board: results
-            });
+        if (result) {
+            this.setState({ board: result });
         }
     }
 
@@ -107,6 +110,9 @@ export default class MatchstickGame extends Component {
     }
     
     render() {
+        const nSticks = getAllSticks(this.state.board).length;
+        const nEmptySticks = getAllEmptySticks(this.state.board).length;
+
         return (
             <div>
               <h1>Matchstick</h1>
@@ -122,18 +128,24 @@ export default class MatchstickGame extends Component {
               </div>
 
               <div className="solver-controls">
-                <span>Last Search Time: {this.state.lastSearchTime} msec.</span>              </div>
-
+                Last Search. Time: {this.state.lastSearchTime} msec., Count: {this.state.count}
+              </div>
               <div id="selector">
                 <BoardSelector onReset={this.doReset.bind(this)}/>
               </div>
               <div id="playfield">
-                
-                
                 <MatchstickPlayfield board={this.state.board}
                                      onClick={this.onStickClick.bind(this)}/>
               </div>
-              <SquareList board={this.state.board}/>
+              <div id="square-list">
+                <table className="stats">
+                  <tr><td className="label">Sticks</td><td>{nSticks}</td></tr>
+                  <tr><td className="label">Empty Sticks</td><td>{nEmptySticks}</td></tr>
+                  <tr><td className="label">Moves</td><td>{nSticks * nEmptySticks}</td></tr>
+                </table>
+                
+                <SquareList board={this.state.board}/>
+              </div>
             </div>
         );
     }
