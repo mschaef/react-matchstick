@@ -1,3 +1,4 @@
+import _ from 'lodash';
 
 import {
     createBoard,
@@ -6,43 +7,44 @@ import {
     SIDE_TOP
 } from './MatchstickModel';
 
-const defaultBoard = {
-    size: { x: 4, y: 4},
-    sticks: [
-        { x: 0, y: 0, side: SIDE_LEFT },
-        { x: 0, y: 1, side: SIDE_LEFT },
-        { x: 0, y: 2, side: SIDE_LEFT },
-        { x: 0, y: 3, side: SIDE_TOP  },
-        { x: 1, y: 3, side: SIDE_TOP  },
-        { x: 2, y: 3, side: SIDE_TOP  },
-        { x: 1, y: 0, side: SIDE_LEFT },
-        { x: 1, y: 1, side: SIDE_LEFT },
-        { x: 1, y: 2, side: SIDE_TOP  },
-        { x: 2, y: 1, side: SIDE_LEFT },
-        { x: 3, y: 0, side: SIDE_LEFT },
-        { x: 3, y: 1, side: SIDE_LEFT },
-        { x: 3, y: 2, side: SIDE_LEFT },
-        { x: 1, y: 0, side: SIDE_TOP  },
-        { x: 2, y: 0, side: SIDE_TOP  }
-    ],
-    params: { sticksToMove: 3, squaresToMake: 2 }    
-};
-
-const auxBoard = {
-    size: { x: 4, y: 4 },
-    sticks: [
-        { x: 0, y:1, side: SIDE_LEFT },
-        { x: 1, y:1, side: SIDE_LEFT },
-        { x: 0, y:1, side: SIDE_TOP  },
-        { x: 0, y:2, side: SIDE_TOP  },
-        { x: 1, y:2, side: SIDE_TOP  },
-        { x: 2, y:2, side: SIDE_TOP  },
-        { x: 1, y:0, side: SIDE_LEFT },
-        { x: 1, y:0, side: SIDE_TOP  },
-        { x: 2, y:0, side: SIDE_TOP  },
-        { x: 2, y:1, side: SIDE_TOP  }
-    ],
-    params: { sticksToMove: 3, squaresToMake: 2 }
+const standardBoards = {
+    "Simple" : {
+        size: { x: 4, y: 4 },
+        sticks: [
+            { x: 0, y:1, side: SIDE_LEFT },
+            { x: 1, y:1, side: SIDE_LEFT },
+            { x: 0, y:1, side: SIDE_TOP  },
+            { x: 0, y:2, side: SIDE_TOP  },
+            { x: 1, y:2, side: SIDE_TOP  },
+            { x: 2, y:2, side: SIDE_TOP  },
+            { x: 1, y:0, side: SIDE_LEFT },
+            { x: 1, y:0, side: SIDE_TOP  },
+            { x: 2, y:0, side: SIDE_TOP  },
+            { x: 2, y:1, side: SIDE_TOP  }
+        ],
+        params: { sticksToMove: 3, squaresToMake: 2 }
+    },
+    "Complex": {
+        size: { x: 4, y: 4},
+        sticks: [
+            { x: 0, y: 0, side: SIDE_LEFT },
+            { x: 0, y: 1, side: SIDE_LEFT },
+            { x: 0, y: 2, side: SIDE_LEFT },
+            { x: 0, y: 3, side: SIDE_TOP  },
+            { x: 1, y: 3, side: SIDE_TOP  },
+            { x: 2, y: 3, side: SIDE_TOP  },
+            { x: 1, y: 0, side: SIDE_LEFT },
+            { x: 1, y: 1, side: SIDE_LEFT },
+            { x: 1, y: 2, side: SIDE_TOP  },
+            { x: 2, y: 1, side: SIDE_LEFT },
+            { x: 3, y: 0, side: SIDE_LEFT },
+            { x: 3, y: 1, side: SIDE_LEFT },
+            { x: 3, y: 2, side: SIDE_LEFT },
+            { x: 1, y: 0, side: SIDE_TOP  },
+            { x: 2, y: 0, side: SIDE_TOP  }
+        ],
+        params: { sticksToMove: 3, squaresToMake: 2 }    
+    }
 };
 
 function getBoard(boardDefinition) {
@@ -59,8 +61,10 @@ function getBoard(boardDefinition) {
     return board;
 }
 
-export function getDefaultBoard() {
+export function getBoardNames() {
+    return _.keys(standardBoards);
+}
 
-    //  return getBoard(defaultBoard);
-    return getBoard(auxBoard);
+export function getBoardByName(boardName) {
+    return getBoard(standardBoards[boardName]);
 }

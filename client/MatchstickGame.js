@@ -16,11 +16,47 @@ import {
 } from './MatchstickModel';
 
 import {
-    getDefaultBoard
+    getBoardNames,
+    getBoardByName
 } from './StandardBoards';
 
 import SquareList from './SquareList';
 import MatchstickPlayfield from './MatchstickPlayfield';
+
+class BoardSelector extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            selected: "Simple"
+        };
+    }
+
+    onSelectChange(event) {
+        this.setState({selected: event.target.value});
+    }
+    
+    render() {
+    
+        const entries = getBoardNames().map(name => {
+            return <option value={name} key={name}>
+                {name}
+            </option>;
+        });
+                                        
+        return (
+            <span>
+              <select value={this.state.selected}
+                      onChange={this.onSelectChange.bind(this)}>
+                {entries}
+              </select>
+              <button onClick={() => this.props.onReset(this.state.selected)}>
+                Reset
+              </button>
+            </span>
+        );
+    }
+}
 
 export default class MatchstickGame extends Component {
 
@@ -28,7 +64,7 @@ export default class MatchstickGame extends Component {
         super(props);
 
         this.state = {
-            board: getDefaultBoard(),
+            board: getBoardByName("Simple"),
             lastSearchTime : "N/A",
             targetMatchSticks: "3",
             targetSquares: "2"
@@ -69,8 +105,8 @@ export default class MatchstickGame extends Component {
         }
     }
 
-    doReset() {
-        this.setState({ board: this.getDefaultBoard() });
+    doReset(boardName) {
+        this.setState({ board: getBoardByName(boardName) });
     }
 
     doSquarify() {
@@ -87,7 +123,9 @@ export default class MatchstickGame extends Component {
         return (
             <div>
               <h1>Matchstick</h1>
-              <div className="solver-controls">                
+              <div className="solver-controls">
+                <BoardSelector onReset={this.doReset.bind(this)}/>
+                
                 Move <input value={this.state.targetMatchSticks}
                             onChange={this.onTargetMatchSticksChange.bind(this)}/>
                 matchsticks to make <input value={this.state.targetSquares}
@@ -95,7 +133,6 @@ export default class MatchstickGame extends Component {
                 squares.
                 
                 <button onClick={this.doSearch.bind(this)}>Go</button>
-                <button onClick={this.doReset.bind(this)}>Reset</button>
                 <button onClick={this.doSquarify.bind(this)}>Squarify</button>
               </div>
 
