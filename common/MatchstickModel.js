@@ -21,21 +21,25 @@ export function getBoardDimensions(board) {
     };
 }
 
+function matchStickOffset(board, x, y, sideLeft) {
+    return ((2 * x) + (sideLeft ? 0 : 1)) + (board.get('sx') * 3 * y);
+}
+
 export function setMatchStick(board, x, y, sideLeft, present) {
-    let ofs = ((2 * x) + (sideLeft ? 0 : 1)) + (board.get('sx') * 3 * y);
+    const ofs = matchStickOffset(board, x, y, sideLeft);
 
     return board.setIn(['board', ofs], present);
 }
 
 export function getMatchStick(board, x, y, sideLeft) {
-    let ofs = (2 * x) + (sideLeft ? 0 : 1) + (board.get('sx') * 3 * y);
+    const ofs = matchStickOffset(board, x, y, sideLeft);
     
     return board.getIn(['board',ofs]);
 }
 
 export function isSquareAt(board, x, y, size) {
-            
-    let { sx, sy } = board.toJS();
+    const sx = board.get('sx');
+    const sy = board.get('sy');
 
     if ((x < 0) || (y < 0) || (x + size > sx) || (y + size > sy))
         return false;
@@ -62,8 +66,9 @@ export function isSquareAt(board, x, y, size) {
 export function setSquare(board, x, y, size) {
     let newBoard = board;
 
-    let { sx, sy } = board.toJS();
-
+    const sx = board.get('sx');
+    const sy = board.get('sy');
+    
     if ((x < 0) || (y < 0) || (x + size > sx) || (y + size > sy))
         FAIL("Square parameters out of range.");
 
@@ -81,7 +86,8 @@ export function setSquare(board, x, y, size) {
 }
 
 export function getSquares(board) {
-    let { sx, sy } = board.toJS();
+    const sx = board.get('sx');
+    const sy = board.get('sy');
 
     let squares = Immutable.List();
     
@@ -101,7 +107,9 @@ export function getSquares(board) {
 }
 
 export function countSquares(board) {
-    let { sx, sy } = board.toJS();
+
+    const sx = board.get('sx');
+    const sy = board.get('sy');
 
     let squareCount = 0;
     
@@ -125,7 +133,9 @@ export function setSquares(board, squares) {
 }
 
 function queryStickLocations(board, queryValue) {
-    let { sx, sy } = board.toJS();
+
+    const sx = board.get('sx');
+    const sy = board.get('sy');
 
     let sticks = [];
 

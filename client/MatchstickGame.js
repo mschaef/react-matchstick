@@ -138,7 +138,7 @@ export default class MatchstickGame extends Component {
 
         let { sx, sy } = getBoardDimensions(currentBoard);
         
-        let newBoard = setSquares(createBoard(sx, sy), squares);
+        let newBoard = setSquares(createBoard(sx, sy), squares); 
 
         this.setState({ board: newBoard });
     }
