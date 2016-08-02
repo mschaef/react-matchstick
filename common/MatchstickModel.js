@@ -269,10 +269,15 @@ function search0(boards, maxDepth, targetSquares) {
 export function search(board, maxDepth, targetSquares) {
     count = 0;
     squareTestCount = 0;
+
+    const startT = new Date().getTime();
     
     let result = search0(board, maxDepth, targetSquares);
 
+    const lastSearchTime = new Date().getTime() - startT;
+    
     console.error("n=", count, squareTestCount);
     
-    return { result, count, squareTestCount };
+    return { result, count, squareTestCount, lastSearchTime };
 }
+

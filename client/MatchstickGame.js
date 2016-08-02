@@ -1,3 +1,5 @@
+import 'whatwg-fetch';
+
 import React, { Component } from 'react';
 
 import classNames from 'classnames';
@@ -70,16 +72,9 @@ export default class MatchstickGame extends Component {
         this.setState({ targetSquares: event.target.value });
     }
     
-    doSearch() {
-        var startT = new Date().getTime();
-
-        let { result, count, squareTestCount }
-                = search(this.state.board,
-                         parseInt(this.state.targetMatchSticks),
-                         parseInt(this.state.targetSquares));
-
+    setSearchResults({ result, count, squareTestCount, lastSearchTime }) {
         this.setState({
-            lastSearchTime: new Date().getTime() - startT,
+            lastSearchTime,
             count,
             squareTestCount
         });
@@ -87,6 +82,38 @@ export default class MatchstickGame extends Component {
         if (result) {
             this.setState({ board: result });
         }
+    }
+    
+    doBrowserSearch() {
+        const results
+                  = search(this.state.board,
+                           parseInt(this.state.targetMatchSticks),
+                           parseInt(this.state.targetSquares));
+
+        this.setSearchResults(results);
+    }
+
+    doServerSearch() {
+        const request = {
+            board: this.state.board,
+            maxDepth: this.state.targetMatchSticks,
+            targetSquares: this.state.targetSquares
+        };
+
+        return fetch(`/solve-board`, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(request)
+        }).then(response => {
+            response.json().then(response => {
+                console.log('response', response);
+            
+                this.setSearchResults(response);
+            });
+        });
     }
 
     doReset(boardName) {
@@ -123,7 +150,8 @@ export default class MatchstickGame extends Component {
                                            onChange={this.onTargetSquaresChange.bind(this)}/>
                 squares.
                 
-                <button onClick={this.doSearch.bind(this)}>Go</button>
+                <button onClick={this.doBrowserSearch.bind(this)}>Go (Browser)</button>
+                <button onClick={this.doServerSearch.bind(this)}>Go (Server)</button>                
                 <button onClick={this.doSquarify.bind(this)}>Squarify</button>
               </div>
 

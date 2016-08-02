@@ -4,6 +4,12 @@ import Immutable from 'immutable';
 
 import './_InitialData';
 
+import {
+    boardToJson,
+    boardFromJson,
+    search
+} from '../common/MatchstickModel.js';
+
 export default function(app) {
 
     function respondBadRequest(res, message) {
@@ -16,4 +22,16 @@ export default function(app) {
         res.status(404).send(message);
     }
 
+    app.post('/solve-board', function(req, res) {
+        const { board, maxDepth, targetSquares } = req.body;
+
+        LOG.info('solution-request', { board, maxDepth, targetSquares });
+
+        const solution = search(board, maxDepth, targetSquares);
+
+        LOG.info('solution', solution);
+        
+        res.json(solution);
+        res.end();
+    });
 }
