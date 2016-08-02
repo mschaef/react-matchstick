@@ -8,6 +8,16 @@ import {
 } from '../common/MatchstickModel';
 
 const standardBoards = {
+    "0 - Trivial" : {
+        size: { x: 2, y: 2 },
+        sticks: [
+            { x: 0, y:0, side: SIDE_LEFT },
+            { x: 0, y:1, side: SIDE_LEFT },
+            { x: 1, y:1, side: SIDE_LEFT },
+            { x: 0, y:2, side: SIDE_TOP  }
+        ],
+        params: { targetMatchSticks: 1, targetSquares: 1 }
+    },
     "1 - Simple" : {
         size: { x: 4, y: 4 },
         sticks: [
