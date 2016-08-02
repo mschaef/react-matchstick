@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import {
     getSquares
-} from './MatchstickModel';
+} from '../common/MatchstickModel';
 
 
 export default function SquareList({board}) {

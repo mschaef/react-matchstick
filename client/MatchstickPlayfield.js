@@ -12,7 +12,7 @@ import {
     search,
     SIDE_LEFT,
     SIDE_TOP
-} from './MatchstickModel';
+} from '../common/MatchstickModel';
 
 import SquareList from './SquareList';
 

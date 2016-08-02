@@ -21,7 +21,10 @@ module.exports = {
             {
                 test: /\.js$/,
                 loaders: ['react-hot', 'babel'],
-                include: path.join(__dirname, 'client')
+                include: [
+                    path.join(__dirname, 'client'),
+                    path.join(__dirname, 'common')
+                ]
             }, {
                 test: /\.scss$/,
                 loader: 'style!css!sass'

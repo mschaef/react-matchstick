@@ -4,3 +4,5 @@ npm-debug.log
 dist
 *#
 *~
+native/matchstick-O0
+native/matchstick-O3
