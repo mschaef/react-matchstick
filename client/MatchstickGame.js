@@ -11,6 +11,7 @@ import {
     getMatchStick,
     getAllSticks,
     getAllEmptySticks,
+    getBoardDimensions,
     getSquares,
     jsonToBoard,
     setSquares,
@@ -135,7 +136,9 @@ export default class MatchstickGame extends Component {
 
         let squares = getSquares(currentBoard);
 
-        let newBoard = setSquares(createBoard(currentBoard.sx, currentBoard.sy), squares);
+        let { sx, sy } = getBoardDimensions(currentBoard);
+        
+        let newBoard = setSquares(createBoard(sx, sy), squares);
 
         this.setState({ board: newBoard });
     }
