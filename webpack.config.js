@@ -4,7 +4,7 @@ var webpack = require('webpack');
 module.exports = {
     devtool: 'eval',
     entry: [
-        'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=2000&overlay=false',
+        'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000&overlay=true',
         'webpack/hot/only-dev-server',
         './client/index'
     ],
