@@ -5,12 +5,14 @@ import React, { Component } from 'react';
 import classNames from 'classnames';
 
 import {
+    boardToJson,
     createBoard,
     setMatchStick,
     getMatchStick,
     getAllSticks,
     getAllEmptySticks,
     getSquares,
+    jsonToBoard,
     setSquares,
     search,
     SIDE_LEFT,
@@ -95,7 +97,7 @@ export default class MatchstickGame extends Component {
 
     doServerSearch() {
         const request = {
-            board: this.state.board,
+            board: boardToJson(this.state.board),
             maxDepth: this.state.targetMatchSticks,
             targetSquares: this.state.targetSquares
         };
@@ -110,7 +112,9 @@ export default class MatchstickGame extends Component {
         }).then(response => {
             response.json().then(response => {
                 console.log('response', response);
-            
+
+                response.result = jsonToBoard(response.result);
+                
                 this.setSearchResults(response);
             });
         });

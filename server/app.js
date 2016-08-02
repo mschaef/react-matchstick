@@ -6,7 +6,7 @@ import './_InitialData';
 
 import {
     boardToJson,
-    boardFromJson,
+    jsonToBoard,
     search
 } from '../common/MatchstickModel.js';
 
@@ -27,8 +27,10 @@ export default function(app) {
 
         LOG.info('solution-request', { board, maxDepth, targetSquares });
 
-        const solution = search(board, maxDepth, targetSquares);
+        const solution = search(jsonToBoard(board), maxDepth, targetSquares);
 
+        solution.result = boardToJson(solution.result);
+        
         LOG.info('solution', solution);
         
         res.json(solution);

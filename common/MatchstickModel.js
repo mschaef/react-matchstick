@@ -275,3 +275,18 @@ export function search(board, maxDepth, targetSquares) {
     return { result, count, squareTestCount, lastSearchTime };
 }
 
+export function boardToJson(board) {
+    const json = copyBoard(board);
+
+    delete json.prev;
+
+    return json;
+}
+
+export function jsonToBoard(json) {
+    const board = copyBoard(json);
+
+    board.prev = null;
+
+    return board;
+}
