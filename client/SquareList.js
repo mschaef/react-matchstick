@@ -8,9 +8,13 @@ import {
 export default function SquareList({board}) {
 
     let squares = getSquares(board);
+
+    function squareKey(square) {
+        return square.get('x') + '-' + square.get('y') + '-' + square.get('size');
+    }
     
     let squareRows = squares.map(square => (
-        <tr>
+        <tr key={squareKey(square)}>
           <td>{square.get('x')}</td>
           <td>{square.get('y')}</td>
           <td>{square.get('size')}</td>

@@ -16,17 +16,11 @@ export function createBoard(sx, sy) {
     };
 }
 
-export function boardDifference(boardX, boardY) {
-    if ((boardX.sx != boardY.sx) || (boardX.sy != boardY.sy))
-        FAIL("Boards of differing sizes");
-
-    let result = createBoard(boardX.sx, boardY.sy);
-
-    for(let ii = 0; ii < boardX.board.length; ii++) {
-        result.board[ii] = boardX.board[ii] && !boardY.board[ii];
-    }
-
-    return result;
+export function getBoardDimensions(board) {
+    return {
+        sx: board.sx,
+        sy: board.sy
+    };
 }
 
 function boardsEqual(boardX, boardY) {

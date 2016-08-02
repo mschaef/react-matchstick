@@ -167,9 +167,11 @@ export default class MatchstickGame extends Component {
               </div>
               <div id="square-list">
                 <table className="stats">
-                  <tr><td className="label">Sticks</td><td>{nSticks}</td></tr>
-                  <tr><td className="label">Empty Sticks</td><td>{nEmptySticks}</td></tr>
-                  <tr><td className="label">Moves</td><td>{nSticks * nEmptySticks}</td></tr>
+                  <tbody>
+                    <tr><td className="label">Sticks</td><td>{nSticks}</td></tr>
+                    <tr><td className="label">Empty Sticks</td><td>{nEmptySticks}</td></tr>
+                    <tr><td className="label">Moves</td><td>{nSticks * nEmptySticks}</td></tr>
+                  </tbody>
                 </table>
                 
                 <SquareList board={this.state.board}/>
