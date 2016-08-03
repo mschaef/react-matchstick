@@ -25,6 +25,12 @@ function matchStickOffset(board, x, y, sideLeft) {
     return ((2 * x) + (sideLeft ? 0 : 1)) + (board.get('sx') * 3 * y);
 }
 
+function _setMatchStick(board, mutator, x, y, sideLeft, present) {
+    const ofs = matchStickOffset(board, x, y, sideLeft);
+
+    mutator.set(ofs, present);
+}
+
 export function setMatchStick(board, x, y, sideLeft, present) {
     const ofs = matchStickOffset(board, x, y, sideLeft);
 
@@ -64,7 +70,7 @@ export function isSquareAt(board, x, y, size) {
 }
 
 export function setSquare(board, x, y, size) {
-    let newBoard = board;
+    let vec = board.get('board');
 
     const sx = board.get('sx');
     const sy = board.get('sy');
@@ -72,17 +78,19 @@ export function setSquare(board, x, y, size) {
     if ((x < 0) || (y < 0) || (x + size > sx) || (y + size > sy))
         FAIL("Square parameters out of range.");
 
-    for(let cx = x; cx < x + size; cx++) {
-        newBoard = setMatchStick(newBoard, cx, y, SIDE_TOP, true);
-        newBoard = setMatchStick(newBoard, cx, y + size, SIDE_TOP, true);
-    }
+    vec = vec.withMutations(mutator => {
+        for(let cx = x; cx < x + size; cx++) {
+            _setMatchStick(board, mutator, cx, y, SIDE_TOP, true);
+            _setMatchStick(board, mutator, cx, y + size, SIDE_TOP, true);
+        }
 
-    for(let cy = y; cy < y + size; cy++) {
-        newBoard = setMatchStick(newBoard, x, cy, SIDE_LEFT, true);
-        newBoard = setMatchStick(newBoard, x + size, cy, SIDE_LEFT, true);
-    }
+        for(let cy = y; cy < y + size; cy++) {
+            _setMatchStick(board, mutator, x, cy, SIDE_LEFT, true);
+            _setMatchStick(board, mutator, x + size, cy, SIDE_LEFT, true);
+        }
+    });
 
-    return newBoard;
+    return board.set('board', vec);
 }
 
 export function getSquares(board) {
@@ -172,9 +180,14 @@ export function countSticks(board) {
 }
 
 function moveStick(board, from, to) {
-    let newBoard = setMatchStick(board, from.x, from.y, from.side, false);
+    let vec = board.get('board');
 
-    return setMatchStick(newBoard, to.x, to.y, to.side, true);
+    vec = vec.withMutations(mutator => {
+        _setMatchStick(board, mutator, from.x, from.y, from.side, false);
+        _setMatchStick(board, mutator, to.x, to.y, to.side, true);
+    });
+
+    return board.set('board', vec);
 }
 
 var count = 0;
