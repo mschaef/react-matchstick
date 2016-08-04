@@ -42,6 +42,35 @@ function BoardSelector({onReset}) {
     );
 };
 
+
+function SearchStats({serverRequestPending, lastSearchTime, count}) {
+
+    if (serverRequestPending) {
+        return (
+            <div className="search-stats server-request-pending">
+              Server request pending.
+            </div>
+        );
+    }
+    
+    if (!lastSearchTime || ! count) {
+        return (
+            <div className="search-stats">
+              No previous search.
+            </div>
+        );
+    }
+    
+    return (
+        <div className="search-stats">
+          Last Search
+          Time: {(lastSearchTime / 1000).toFixed(0)} sec,
+          Count: {count},
+          Rate: {(count / lastSearchTime * 1000).toFixed(0)}/sec.
+        </div>
+    );
+}
+
 export default class MatchstickGame extends Component {
 
     constructor(props) {
@@ -51,9 +80,10 @@ export default class MatchstickGame extends Component {
 
         this.state = {
             board: boardInfo.board,
-            lastSearchTime : "N/A",
+            lastSearchTime : null,
             targetMatchSticks: boardInfo.targetMatchSticks,
-            targetSquares: boardInfo.targetSquares
+            targetSquares: boardInfo.targetSquares,
+            serverRequestPending: false
         };
     }
 
@@ -103,6 +133,8 @@ export default class MatchstickGame extends Component {
             targetSquares: this.state.targetSquares
         };
 
+        this.setState({serverRequestPending: true});
+        
         return fetch(`/solve-board`, {
             method: 'POST',
             headers: {
@@ -113,7 +145,8 @@ export default class MatchstickGame extends Component {
         }).then(response => {
             response.json().then(response => {
                 console.log('response', response);
-
+                this.setState({serverRequestPending: false});
+                
                 response.result = jsonToBoard(response.result);
                 
                 this.setSearchResults(response);
@@ -162,9 +195,11 @@ export default class MatchstickGame extends Component {
                 <button onClick={this.doSquarify.bind(this)}>Squarify</button>
               </div>
 
-              <div className="solver-controls">
-                Last Search. Time: {this.state.lastSearchTime} msec., Count: {this.state.count}
-              </div>
+              <SearchStats
+                 serverRequestPending={this.state.serverRequestPending}
+                 lastSearchTime={this.state.lastSearchTime}
+                 count={this.state.count}/>
+              
               <div id="selector">
                 <BoardSelector onReset={this.doReset.bind(this)}/>
               </div>
