@@ -11,6 +11,7 @@ import {
     getMatchStick,
     getAllSticks,
     getAllEmptySticks,
+    getBoardDimensions,
     getSquares,
     jsonToBoard,
     setSquares,
@@ -41,6 +42,26 @@ function BoardSelector({onReset}) {
     );
 };
 
+
+function SearchStats({lastSearchTime, count}) {
+    if (!lastSearchTime || ! count) {
+        return (
+            <div className="search-stats">
+              No previous search.
+            </div>
+        );
+    }
+    
+    return (
+        <div className="search-stats">
+          Last Search
+          Time: {(lastSearchTime / 1000).toFixed(0)} sec,
+          Count: {count},
+          Rate: {(count / lastSearchTime * 1000).toFixed(0)}/sec.
+        </div>
+    );
+}
+
 export default class MatchstickGame extends Component {
 
     constructor(props) {
@@ -50,7 +71,7 @@ export default class MatchstickGame extends Component {
 
         this.state = {
             board: boardInfo.board,
-            lastSearchTime : "N/A",
+            lastSearchTime : null,
             targetMatchSticks: boardInfo.targetMatchSticks,
             targetSquares: boardInfo.targetSquares
         };
@@ -135,7 +156,9 @@ export default class MatchstickGame extends Component {
 
         let squares = getSquares(currentBoard);
 
-        let newBoard = setSquares(createBoard(currentBoard.sx, currentBoard.sy), squares);
+        let { sx, sy } = getBoardDimensions(currentBoard);
+        
+        let newBoard = setSquares(createBoard(sx, sy), squares); 
 
         this.setState({ board: newBoard });
     }
@@ -159,9 +182,10 @@ export default class MatchstickGame extends Component {
                 <button onClick={this.doSquarify.bind(this)}>Squarify</button>
               </div>
 
-              <div className="solver-controls">
-                Last Search. Time: {this.state.lastSearchTime} msec., Count: {this.state.count}
-              </div>
+              <SearchStats
+                 lastSearchTime={this.state.lastSearchTime}
+                 count={this.state.count}/>
+              
               <div id="selector">
                 <BoardSelector onReset={this.doReset.bind(this)}/>
               </div>

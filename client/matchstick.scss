@@ -12,21 +12,29 @@ html, body {
     font-family: "Helvetica";
 }
 
-div.solver-controls {
+@mixin control-pane {
     border: 1px solid #a0a0a0;
     padding: 0.5em;
     margin-bottom: 0.5em;
     background: #e0ffe0;
+}
 
+div.solver-controls {
+    @include control-pane;
+   
     input {
         width: 3em;
     }
     
     button {
-        width: 6em;
+        width: 10em;
+        margin: 0 0.5em 0 0.5em;
     }
 }
 
+div.search-stats {
+    @include control-pane;
+}
 
 div.square-list {
     float: left;
