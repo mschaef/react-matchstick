@@ -128,10 +128,10 @@ export function getSquares(board) {
     let { sx, sy } = board;
 
     let squares = Immutable.List();
-    
+
     for(let cx = 0; cx < sx; cx++) {
         for(let cy = 0; cy < sy; cy++) {
-            let maxSize = Math.min(sx - cx, sy - cy);
+            let maxSize = ((sx - cx) < (sy - cy)) ? (sx - cx) : (sy - cy);
 
             for(let size = 1; size <= maxSize; size++) {
                 if(isSquareAt(board, cx, cy, size)) {
@@ -151,8 +151,8 @@ export function countSquares(board) {
     
     for(let cx = 0; cx < sx; cx++) {
         for(let cy = 0; cy < sy; cy++) {
-            let maxSize = Math.min(sx - cx, sy - cy);
-
+            let maxSize = ((sx - cx) < (sy - cy)) ? (sx - cx) : (sy - cy);
+            
             for(let size = 1; size <= maxSize; size++) {
                 if(isSquareAt(board, cx, cy, size)) {
                     squareCount++;
