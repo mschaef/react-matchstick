@@ -208,11 +208,7 @@ function boardMeetsSearchCriteria(board, targetSquares) {
 
 function search0(boards, maxDepth, targetSquares) {
     count++;
-
-    if (count % 1000 == 0) {
-        console.log('count', count);
-    }
-
+    
     let currentBoard = boards.last();
 
     if (boardMeetsSearchCriteria(currentBoard, targetSquares))        
