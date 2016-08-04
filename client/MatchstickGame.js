@@ -43,7 +43,16 @@ function BoardSelector({onReset}) {
 };
 
 
-function SearchStats({lastSearchTime, count}) {
+function SearchStats({serverRequestPending, lastSearchTime, count}) {
+
+    if (serverRequestPending) {
+        return (
+            <div className="search-stats server-request-pending">
+              Server request pending.
+            </div>
+        );
+    }
+    
     if (!lastSearchTime || ! count) {
         return (
             <div className="search-stats">
@@ -73,7 +82,8 @@ export default class MatchstickGame extends Component {
             board: boardInfo.board,
             lastSearchTime : null,
             targetMatchSticks: boardInfo.targetMatchSticks,
-            targetSquares: boardInfo.targetSquares
+            targetSquares: boardInfo.targetSquares,
+            serverRequestPending: false
         };
     }
 
@@ -123,6 +133,8 @@ export default class MatchstickGame extends Component {
             targetSquares: this.state.targetSquares
         };
 
+        this.setState({serverRequestPending: true});
+        
         return fetch(`/solve-board`, {
             method: 'POST',
             headers: {
@@ -133,7 +145,8 @@ export default class MatchstickGame extends Component {
         }).then(response => {
             response.json().then(response => {
                 console.log('response', response);
-
+                this.setState({serverRequestPending: false});
+                
                 response.result = jsonToBoard(response.result);
                 
                 this.setSearchResults(response);
@@ -183,6 +196,7 @@ export default class MatchstickGame extends Component {
               </div>
 
               <SearchStats
+                 serverRequestPending={this.state.serverRequestPending}
                  lastSearchTime={this.state.lastSearchTime}
                  count={this.state.count}/>
               
