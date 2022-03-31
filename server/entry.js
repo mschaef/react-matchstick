@@ -1,3 +1,1 @@
-require('babel-register');
-require('babel-polyfill');
-require('./main');
+import './main.js';

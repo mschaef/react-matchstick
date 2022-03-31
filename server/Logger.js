@@ -1,6 +1,6 @@
 import winston from 'winston';
 
-let Logger = new winston.Logger({
+let Logger = winston.createLogger({
     transports: [
         new (winston.transports.Console)({
             timestamp: true,

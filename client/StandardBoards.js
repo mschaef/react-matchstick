@@ -5,7 +5,7 @@ import {
     setMatchStick,
     SIDE_LEFT,
     SIDE_TOP
-} from '../common/MatchstickModel';
+} from '../common/MatchstickModel.js';
 
 const standardBoards = {
     "0 - Trivial" : {

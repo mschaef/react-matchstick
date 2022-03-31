@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import {
     getSquares
-} from '../common/MatchstickModel';
+} from '../common/MatchstickModel.js';
 
 
 export default function SquareList({board}) {
@@ -12,7 +12,7 @@ export default function SquareList({board}) {
     function squareKey(square) {
         return square.get('x') + '-' + square.get('y') + '-' + square.get('size');
     }
-    
+
     let squareRows = squares.map(square => (
         <tr key={squareKey(square)}>
           <td>{square.get('x')}</td>
@@ -20,7 +20,7 @@ export default function SquareList({board}) {
           <td>{square.get('size')}</td>
         </tr>
     ));
-    
+
     return (
         <div className="square-list">
           <div className="list-title">

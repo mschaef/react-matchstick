@@ -13,9 +13,9 @@ import {
     search,
     SIDE_LEFT,
     SIDE_TOP
-} from '../common/MatchstickModel';
+} from '../common/MatchstickModel.js';
 
-import SquareList from './SquareList';
+import SquareList from './SquareList.js';
 
 function bindClickHandler(onClick, x, y, side) {
     return () => onClick(x, y, side);

@@ -18,15 +18,15 @@ import {
     search,
     SIDE_LEFT,
     SIDE_TOP
-} from '../common/MatchstickModel';
+} from '../common/MatchstickModel.js';
 
 import {
     getBoardNames,
     getBoardByName
-} from './StandardBoards';
+} from './StandardBoards.js';
 
-import SquareList from './SquareList';
-import MatchstickPlayfield from './MatchstickPlayfield';
+import SquareList from './SquareList.js';
+import MatchstickPlayfield from './MatchstickPlayfield.js';
 
 function BoardSelector({onReset}) {
     const entries = getBoardNames().map(name => {
@@ -34,7 +34,7 @@ function BoardSelector({onReset}) {
             {name}
         </div>;
     });
-                                        
+
     return (
         <div className="board-selector">
           {entries}
@@ -52,7 +52,7 @@ function SearchStats({serverRequestPending, lastSearchTime, count}) {
             </div>
         );
     }
-    
+
     if (!lastSearchTime || ! count) {
         return (
             <div className="search-stats">
@@ -60,7 +60,7 @@ function SearchStats({serverRequestPending, lastSearchTime, count}) {
             </div>
         );
     }
-    
+
     return (
         <div className="search-stats">
           Last Search
@@ -104,19 +104,19 @@ export default class MatchstickGame extends Component {
     onTargetSquaresChange(event) {
         this.setState({ targetSquares: event.target.value });
     }
-    
+
     setSearchResults({ result, count, squareTestCount, lastSearchTime }) {
         this.setState({
             lastSearchTime,
             count,
             squareTestCount
         });
-        
+
         if (result) {
             this.setState({ board: result });
         }
     }
-    
+
     doBrowserSearch() {
         const results
                   = search(this.state.board,
@@ -134,7 +134,7 @@ export default class MatchstickGame extends Component {
         };
 
         this.setState({serverRequestPending: true});
-        
+
         return fetch(`/solve-board`, {
             method: 'POST',
             headers: {
@@ -146,9 +146,9 @@ export default class MatchstickGame extends Component {
             response.json().then(response => {
                 console.log('response', response);
                 this.setState({serverRequestPending: false});
-                
+
                 response.result = jsonToBoard(response.result);
-                
+
                 this.setSearchResults(response);
             });
         });
@@ -156,7 +156,7 @@ export default class MatchstickGame extends Component {
 
     doReset(boardName) {
         const boardInfo = getBoardByName(boardName);
-        
+
         this.setState({
             board: boardInfo.board,
             targetMatchSticks: boardInfo.targetMatchSticks,
@@ -170,12 +170,12 @@ export default class MatchstickGame extends Component {
         let squares = getSquares(currentBoard);
 
         let { sx, sy } = getBoardDimensions(currentBoard);
-        
-        let newBoard = setSquares(createBoard(sx, sy), squares); 
+
+        let newBoard = setSquares(createBoard(sx, sy), squares);
 
         this.setState({ board: newBoard });
     }
-    
+
     render() {
         const nSticks = getAllSticks(this.state.board).length;
         const nEmptySticks = getAllEmptySticks(this.state.board).length;
@@ -189,9 +189,9 @@ export default class MatchstickGame extends Component {
                 matchsticks to make <input value={this.state.targetSquares}
                                            onChange={this.onTargetSquaresChange.bind(this)}/>
                 squares.
-                
+
                 <button onClick={this.doBrowserSearch.bind(this)}>Go (Browser)</button>
-                <button onClick={this.doServerSearch.bind(this)}>Go (Server)</button>                
+                <button onClick={this.doServerSearch.bind(this)}>Go (Server)</button>
                 <button onClick={this.doSquarify.bind(this)}>Squarify</button>
               </div>
 
@@ -199,7 +199,7 @@ export default class MatchstickGame extends Component {
                  serverRequestPending={this.state.serverRequestPending}
                  lastSearchTime={this.state.lastSearchTime}
                  count={this.state.count}/>
-              
+
               <div id="selector">
                 <BoardSelector onReset={this.doReset.bind(this)}/>
               </div>
@@ -215,7 +215,7 @@ export default class MatchstickGame extends Component {
                     <tr><td className="label">Moves</td><td>{nSticks * nEmptySticks}</td></tr>
                   </tbody>
                 </table>
-                
+
                 <SquareList board={this.state.board}/>
               </div>
             </div>

@@ -1,9 +1,8 @@
 import config from 'config';
-import LOG from './Logger';
+import LOG from './Logger.js';
 
 import webpack from 'webpack';
 import WebpackDevServer from 'webpack-dev-server';
-import webpackConfig from '../webpack.config';
 
 import express from 'express';
 import http from 'http';
@@ -11,7 +10,11 @@ import morgan from 'morgan';
 
 import bodyParser from 'body-parser';
 
-import installApp from './app';
+import installApp from './app.js';
+
+import webpackConfig from '../webpack.config.babel.js';
+import webpackDevMiddleware from 'webpack-dev-middleware';
+import webpackHotMiddleware from 'webpack-hot-middleware';
 
 ////////////////////////////////
 
@@ -38,13 +41,12 @@ app.use('/', express.static('.'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-app.use(require("webpack-dev-middleware")(compiler, {
+app.use(webpackDevMiddleware(compiler, {
     publicPath: webpackConfig.output.publicPath,
-    noInfo: true,
     stats: { colors: true }
 }));
 
-app.use(require("webpack-hot-middleware")(compiler));
+app.use(webpackHotMiddleware(compiler));
 
 /// Business Logic
 

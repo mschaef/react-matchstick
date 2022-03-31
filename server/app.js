@@ -1,8 +1,8 @@
 import config from 'config';
-import LOG from './Logger';
+import LOG from './Logger.js';
 import Immutable from 'immutable';
 
-import './_InitialData';
+import './_InitialData.js';
 
 import {
     boardToJson,
