@@ -1,3 +1,14 @@
+// Copyright (c) Mike Schaeffer. All rights reserved.
+//
+// The use and distribution terms for this software are covered by the
+// Eclipse Public License 2.0 (https://opensource.org/licenses/EPL-2.0)
+// which can be found in the file LICENSE at the root of this distribution.
+// By using this software in any fashion, you are agreeing to be bound by
+// the terms of this license.
+//
+// You must not remove this notice, or any other, from this software.
+
+
 import Immutable from 'immutable';
 
 function FAIL(error) {
@@ -54,7 +65,7 @@ function findBoardInHistory(boards, board) {
 
         boards = boards.prev;
     }
-    
+
     return false;
 }
 
@@ -65,20 +76,20 @@ export function _setMatchStick(board, x, y, sideLeft, present) {
 
 export function setMatchStick(board, x, y, sideLeft, present) {
     let newBoard = copyBoard(board);
-    
+
     _setMatchStick(newBoard, x, y, sideLeft, present);
-    
+
     return newBoard;
 }
 
 export function getMatchStick(board, x, y, sideLeft) {
     let ofs = (2 * x) + (sideLeft ? 0 : 1) + (board.sx * 3 * y);
-    
+
     return board.board[ofs];
 }
 
 export function isSquareAt(board, x, y, size) {
-            
+
     let { sx, sy } = board;
 
     if ((x < 0) || (y < 0) || (x + size > sx) || (y + size > sy))
@@ -99,7 +110,7 @@ export function isSquareAt(board, x, y, size) {
         if (!getMatchStick(board, x + size, cy, SIDE_LEFT))
             return false;
     }
-    
+
     return true;
 }
 
@@ -148,11 +159,11 @@ export function countSquares(board) {
     let { sx, sy } = board;
 
     let squareCount = 0;
-    
+
     for(let cx = 0; cx < sx; cx++) {
         for(let cy = 0; cy < sy; cy++) {
             let maxSize = ((sx - cx) < (sy - cy)) ? (sx - cx) : (sy - cy);
-            
+
             for(let size = 1; size <= maxSize; size++) {
                 if(isSquareAt(board, cx, cy, size)) {
                     squareCount++;
@@ -207,7 +218,7 @@ export function countSticks(board) {
 
 function moveStick(board, from, to) {
     let newBoard = copyBoard(board);
-    
+
     _setMatchStick(newBoard, from.x, from.y, from.side, false);
     _setMatchStick(newBoard, to.x, to.y, to.side, true);
 
@@ -233,15 +244,15 @@ function search0(boards, maxDepth, targetSquares) {
 
     count++;
 
-    if (boardMeetsSearchCriteria(boards, targetSquares))        
+    if (boardMeetsSearchCriteria(boards, targetSquares))
         return boards;
-    
+
     if (maxDepth <= 0)
         return null;
 
     let sticks = getAllSticks(boards);
     let emptySticks = getAllEmptySticks(boards);
-    
+
     for(let fromIndex = 0; fromIndex < sticks.length; fromIndex++) {
         for(let toIndex = 0; toIndex < emptySticks.length; toIndex++) {
 
@@ -249,9 +260,9 @@ function search0(boards, maxDepth, targetSquares) {
 
             if (findBoardInHistory(boards, newBoard))
                 continue;
-                
+
             let found = search0(newBoard, maxDepth - 1, targetSquares);
-            
+
             if (found)
                 return found;
         }
@@ -265,13 +276,13 @@ export function search(board, maxDepth, targetSquares) {
     squareTestCount = 0;
 
     const startT = new Date().getTime();
-    
+
     let result = search0(board, maxDepth, targetSquares);
 
     const lastSearchTime = new Date().getTime() - startT;
-    
+
     console.error("n=", count, squareTestCount);
-    
+
     return { result, count, squareTestCount, lastSearchTime };
 }
 

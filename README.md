@@ -68,4 +68,9 @@ order of challenge.
   non-rectangular arrangements of matchsticks. (The link above
   contains a number of examples.)
 
+# Licensing and Copyright
 
+Copyright (c) Michael Schaeffer
+
+Licened under the Eclipse Public Licence v2.0, found at the root of
+this repository in the [`LICENSE`](LICENSE) file.

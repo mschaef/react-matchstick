@@ -1,3 +1,13 @@
+// Copyright (c) Mike Schaeffer. All rights reserved.
+//
+// The use and distribution terms for this software are covered by the
+// Eclipse Public License 2.0 (https://opensource.org/licenses/EPL-2.0)
+// which can be found in the file LICENSE at the root of this distribution.
+// By using this software in any fashion, you are agreeing to be bound by
+// the terms of this license.
+//
+// You must not remove this notice, or any other, from this software.
+
 import _ from 'lodash';
 
 import {
@@ -53,7 +63,7 @@ const standardBoards = {
             { x: 1, y: 0, side: SIDE_TOP  },
             { x: 2, y: 0, side: SIDE_TOP  }
         ],
-        params: { targetMatchSticks: 3, targetSquares: 2 }    
+        params: { targetMatchSticks: 3, targetSquares: 2 }
     },
     "2 - Not So Complex": {
         size: { x: 3, y: 3 },
@@ -74,7 +84,7 @@ const standardBoards = {
             { x: 1, y: 0, side: SIDE_TOP  },
             { x: 2, y: 0, side: SIDE_TOP  }
         ],
-        params: { targetMatchSticks: 3, targetSquares: 2 }    
+        params: { targetMatchSticks: 3, targetSquares: 2 }
     },
     "4 - Squares": {
         size: { x: 4, y: 4},
@@ -88,18 +98,18 @@ const standardBoards = {
             { x: 3, y: 1, side: SIDE_LEFT },
 
             { x: 2, y: 0, side: SIDE_TOP  },
-            { x: 3, y: 0, side: SIDE_TOP  },            
+            { x: 3, y: 0, side: SIDE_TOP  },
 
             { x: 0, y: 1, side: SIDE_TOP  },
             { x: 1, y: 1, side: SIDE_TOP  },
             { x: 2, y: 1, side: SIDE_TOP  },
             { x: 3, y: 1, side: SIDE_TOP  },
-            
+
             { x: 0, y: 2, side: SIDE_TOP  },
             { x: 1, y: 2, side: SIDE_TOP  },
             { x: 2, y: 2, side: SIDE_TOP  }
         ],
-        params: { targetMatchSticks: 2, targetSquares: 4 }    
+        params: { targetMatchSticks: 2, targetSquares: 4 }
     },
     "5 - Concentric": {
         size: { x: 4, y: 4},
@@ -111,7 +121,7 @@ const standardBoards = {
             { x: 0, y: 3, side: SIDE_TOP  },
             { x: 1, y: 3, side: SIDE_TOP  },
             { x: 2, y: 3, side: SIDE_TOP  },
-            
+
             { x: 0, y: 0, side: SIDE_LEFT },
             { x: 0, y: 1, side: SIDE_LEFT },
             { x: 0, y: 2, side: SIDE_LEFT },
@@ -120,9 +130,9 @@ const standardBoards = {
             { x: 3, y: 1, side: SIDE_LEFT },
             { x: 3, y: 2, side: SIDE_LEFT },
 
-            { x: 1, y: 1, side: SIDE_TOP  },            
-            { x: 1, y: 1, side: SIDE_LEFT },            
-            { x: 1, y: 2, side: SIDE_TOP  },            
+            { x: 1, y: 1, side: SIDE_TOP  },
+            { x: 1, y: 1, side: SIDE_LEFT },
+            { x: 1, y: 2, side: SIDE_TOP  },
             { x: 2, y: 1, side: SIDE_LEFT }
         ],
         params: { targetMatchSticks: 4, targetSquares: 3}
@@ -136,7 +146,7 @@ function getBoard(boardDefinition) {
 
     for(let ii = 0; ii < sticks.length; ii++) {
         const stick = sticks[ii];
-        
+
         board = setMatchStick(board, stick.x, stick.y, stick.side, true);
     }
 
@@ -149,7 +159,7 @@ export function getBoardNames() {
 
 export function getBoardByName(boardName) {
     const boardDefinition = standardBoards[boardName];
-    
+
     return {
         board: getBoard(boardDefinition),
         targetMatchSticks: boardDefinition.params.targetMatchSticks,
